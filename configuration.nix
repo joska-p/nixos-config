@@ -46,6 +46,7 @@
   # --- Desktop Environment ---
   services.xserver = { enable = true; videoDrivers = [ "modesetting" "nvidia" ]; };
   services.displayManager.sddm.enable = true;
+  services.displayManager.sddm.autoNumlock = true;
   services.desktopManager.plasma6.enable = true;
   environment.plasma6.excludePackages = with pkgs; [ kdePackages.elisa kdePackages.kate ];
   services.xserver.xkb = { layout = "fr"; variant = ""; };
@@ -66,9 +67,9 @@
   users.users.muratha = {
     isNormalUser = true;
     description = "muratha";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "gamemode" ];
     packages = with pkgs; [
-      gcc nodejs nil p7zip zed-editor nvtopPackages.full easyeffects vlc wine winetricks
+      cmake gcc nodejs nil p7zip zed-editor nvtopPackages.full easyeffects vlc wine winetricks
       aria2 kdePackages.discover kdePackages.kcalc kdePackages.kolourpaint kdePackages.ksystemlog
       kdePackages.sddm-kcm kdiff3 mesa-demos uget wayland-utils wl-clipboard zenity
     ];
@@ -82,12 +83,29 @@
   programs.bash.shellAliases = { ll = "ls -l"; rebuild = "sudo nixos-rebuild switch"; update = "sudo nixos-rebuild switch --upgrade"; };
   programs.git.enable = true;
   programs.vscode.enable = true;
+
+  # --- Games ---
+  programs.gamescope = {
+    enable = true;
+    capSysNice = true;
+    args = [ "--fullscreen" ];
+  };
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = false;
     dedicatedServer.openFirewall = false;
   };
-  programs.gamemode.enable = true;
+  programs.gamemode = {
+      enable = true;
+      settings = {
+        general = {
+          renice = 10;
+        };
+        gpu = {
+          gpu_device = 1;
+        };
+      };
+    };
 
   # --- Fonts ---
   fonts.packages = with pkgs; [
