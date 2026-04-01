@@ -79,7 +79,7 @@
 
   # --- Programs ---
   programs.firefox.enable = true;
-  programs.bash.shellAliases = { ll = "ls -l"; rebuild = "sudo nixos-rebuild switch"; };
+  programs.bash.shellAliases = { ll = "ls -l"; rebuild = "sudo nixos-rebuild switch"; update = "sudo nixos-rebuild switch --upgrade"; };
   programs.git.enable = true;
   programs.vscode.enable = true;
   programs.steam = {
