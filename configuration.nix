@@ -119,11 +119,20 @@
 
   # --- Programs ---
   programs.firefox.enable = true;
-  programs.zsh.enable = true;
-  programs.zsh.shellAliases = {
-    ll = "ls -l";
-    rebuild = "sudo nixos-rebuild switch";
-    update = "sudo nixos-rebuild switch --upgrade";
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    autosuggestions.enable = true;
+    syntaxHighlighting.enable = true;
+    shellAliases = {
+      ll = "ls -l";
+      update = "sudo nixos-rebuild switch";
+    };
+    histSize = 10000;
+    histFile = "$HOME/.zsh_history";
+    setOptions = [
+      "HIST_IGNORE_ALL_DUPS"
+    ];
   };
   programs.git.enable = true;
   programs.vscode.enable = true;
@@ -188,6 +197,7 @@
     nodejs
     nil
     p7zip
+    zsh-powerlevel10k
     zed-editor
     nvtopPackages.full
     easyeffects
