@@ -126,13 +126,18 @@
     syntaxHighlighting.enable = true;
     shellAliases = {
       ll = "ls -l";
-      update = "sudo nixos-rebuild switch";
+      rebuild = "sudo nixos-rebuild switch";
+      update = "sudo nixos-rebuild switch --upgrade";
     };
     histSize = 10000;
     histFile = "$HOME/.zsh_history";
     setOptions = [
       "HIST_IGNORE_ALL_DUPS"
     ];
+    ohMyZsh = {
+      enable = true;
+      theme = "refined";
+    };
   };
   programs.git.enable = true;
   programs.vscode.enable = true;
@@ -197,7 +202,6 @@
     nodejs
     nil
     p7zip
-    zsh-powerlevel10k
     zed-editor
     nvtopPackages.full
     easyeffects
