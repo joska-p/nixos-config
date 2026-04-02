@@ -28,8 +28,12 @@
   hardware.graphics = { enable = true; enable32Bit = true; };
   hardware.nvidia = {
     open = false;
+    modesetting.enable = true; # THIS IS CRITICAL
     prime = {
-      offload = { enable = true; enableOffloadCmd = true; };
+      offload = {
+        enable = true;
+        enableOffloadCmd = true;
+      };
       intelBusId = "PCI:0@0:2:0";
       nvidiaBusId = "PCI:1@0:0:0";
     };
@@ -85,27 +89,22 @@
   programs.vscode.enable = true;
 
   # --- Games ---
-  programs.gamescope = {
-    enable = true;
-    capSysNice = true;
-    args = [ "--fullscreen" ];
-  };
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = false;
     dedicatedServer.openFirewall = false;
   };
   programs.gamemode = {
-      enable = true;
-      settings = {
-        general = {
-          renice = 10;
-        };
-        gpu = {
-          gpu_device = 1;
-        };
+    enable = true;
+    settings = {
+      general = {
+        renice = 10;
+      };
+      gpu = {
+        gpu_device = 1;
       };
     };
+  };
 
   # --- Fonts ---
   fonts.packages = with pkgs; [
