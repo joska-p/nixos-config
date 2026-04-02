@@ -25,7 +25,10 @@
 
   # --- Hardware Configuration ---
   hardware.enableRedistributableFirmware = lib.mkDefault true;
-  hardware.graphics = { enable = true; enable32Bit = true; };
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
   hardware.nvidia = {
     open = false;
     modesetting.enable = true; # THIS IS CRITICAL
@@ -34,6 +37,14 @@
         enable = true;
         enableOffloadCmd = true;
       };
+      # Find your GPU IDs with:
+      #   lspci -nn | grep -E "VGA|3D"
+      # Example output:
+      #   00:02.0 VGA compatible controller [0300]: Intel Corporation ...
+      #   01:00.0 3D controller [0302]: NVIDIA Corporation ...
+      # Convert to Nix format `PCI:<domain>@<bus>:<slot>:<func>` (or use the IDs that match your machine):
+      #   intelBusId = "PCI:0@0:2:0"
+      #   nvidiaBusId = "PCI:1@0:0:0"
       intelBusId = "PCI:0@0:2:0";
       nvidiaBusId = "PCI:1@0:0:0";
     };
@@ -42,18 +53,35 @@
     enable = true;
     powerOnBoot = true;
     settings = {
-      General = { Experimental = true; FastConnectable = true; };
-      Policy = { AutoEnable = true; };
+      General = {
+        Experimental = true;
+        FastConnectable = true;
+      };
+      Policy = {
+        AutoEnable = true;
+      };
     };
   };
 
   # --- Desktop Environment ---
-  services.xserver = { enable = true; videoDrivers = [ "modesetting" "nvidia" ]; };
+  services.xserver = {
+    enable = true;
+    videoDrivers = [
+      "modesetting"
+      "nvidia"
+    ];
+  };
   services.displayManager.sddm.enable = true;
   services.displayManager.sddm.autoNumlock = true;
   services.desktopManager.plasma6.enable = true;
-  environment.plasma6.excludePackages = with pkgs; [ kdePackages.elisa kdePackages.kate ];
-  services.xserver.xkb = { layout = "fr"; variant = ""; };
+  environment.plasma6.excludePackages = with pkgs; [
+    kdePackages.elisa
+    kdePackages.kate
+  ];
+  services.xserver.xkb = {
+    layout = "fr";
+    variant = "";
+  };
   console.keyMap = "fr";
 
   # --- Services ---
@@ -71,11 +99,18 @@
   users.users.muratha = {
     isNormalUser = true;
     description = "muratha";
-    extraGroups = [ "networkmanager" "wheel" "gamemode" ];
+    shell = pkgs.zsh;
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "gamemode"
+    ];
     packages = with pkgs; [
-      cmake gcc nodejs nil p7zip zed-editor nvtopPackages.full easyeffects vlc wine winetricks
-      aria2 kdePackages.discover kdePackages.kcalc kdePackages.kolourpaint kdePackages.ksystemlog
-      kdePackages.sddm-kcm kdiff3 mesa-demos uget wayland-utils wl-clipboard zenity
+      kdePackages.discover
+      kdePackages.kcalc
+      kdePackages.kolourpaint
+      kdePackages.ksystemlog
+      kdePackages.sddm-kcm
     ];
   };
 
@@ -84,7 +119,12 @@
 
   # --- Programs ---
   programs.firefox.enable = true;
-  programs.bash.shellAliases = { ll = "ls -l"; rebuild = "sudo nixos-rebuild switch"; update = "sudo nixos-rebuild switch --upgrade"; };
+  programs.zsh.enable = true;
+  programs.bash.shellAliases = {
+    ll = "ls -l";
+    rebuild = "sudo nixos-rebuild switch";
+    update = "sudo nixos-rebuild switch --upgrade";
+  };
   programs.git.enable = true;
   programs.vscode.enable = true;
 
@@ -108,17 +148,59 @@
 
   # --- Fonts ---
   fonts.packages = with pkgs; [
-    nerd-fonts.jetbrains-mono noto-fonts noto-fonts-cjk-sans noto-fonts-color-emoji
-    liberation_ttf fira-code fira-code-symbols mplus-outline-fonts.githubRelease
-    dina-font proggyfonts vista-fonts corefonts
+    nerd-fonts.jetbrains-mono
+    noto-fonts
+    noto-fonts-cjk-sans
+    noto-fonts-color-emoji
+    liberation_ttf
+    fira-code
+    fira-code-symbols
+    mplus-outline-fonts.githubRelease
+    dina-font
+    proggyfonts
+    vista-fonts
+    corefonts
   ];
 
   # --- Optimization and Maintenance ---
-  nix.optimise = { automatic = true; dates = [ "03:45" ]; };
-  nix.gc = { automatic = true; dates = [ "weekly" ]; options = "--delete-older-than 30d"; };
+  nix.optimise = {
+    automatic = true;
+    dates = [ "03:45" ];
+  };
+  nix.gc = {
+    automatic = true;
+    dates = [ "weekly" ];
+    options = "--delete-older-than 30d";
+  };
+  system.autoUpgrade = {
+    enable = true;
+    channel = null; # use current system channel
+    dates = "04:00"; # daily at 04:00 (systemd.time syntax)
+    allowReboot = false; # do not reboot automatically after upgrade
+  };
 
   # --- System Packages ---
-  environment.systemPackages = with pkgs; [ vim ];
+  environment.systemPackages = with pkgs; [
+    vim
+    cmake
+    gcc
+    nodejs
+    nil
+    p7zip
+    zed-editor
+    nvtopPackages.full
+    easyeffects
+    vlc
+    wine
+    winetricks
+    aria2
+    kdiff3
+    mesa-demos
+    uget
+    wayland-utils
+    wl-clipboard
+    zenity
+  ];
 
   # --- System State ---
   system.stateVersion = "25.11";
