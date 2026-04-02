@@ -120,7 +120,7 @@
   # --- Programs ---
   programs.firefox.enable = true;
   programs.zsh.enable = true;
-  programs.bash.shellAliases = {
+  programs.zsh.shellAliases = {
     ll = "ls -l";
     rebuild = "sudo nixos-rebuild switch";
     update = "sudo nixos-rebuild switch --upgrade";
@@ -133,6 +133,7 @@
     enable = true;
     remotePlay.openFirewall = false;
     dedicatedServer.openFirewall = false;
+    protontricks.enable = true;
   };
   programs.gamemode = {
     enable = true;
@@ -193,6 +194,7 @@
     vlc
     wine
     winetricks
+    protonplus
     aria2
     kdiff3
     mesa-demos
