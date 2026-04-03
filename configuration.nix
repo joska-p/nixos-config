@@ -2,6 +2,7 @@
 
 {
   imports = [
+    <home-manager/nixos>
     ./hardware-configuration.nix
     ./modules/hardware.nix
     ./modules/desktop.nix
