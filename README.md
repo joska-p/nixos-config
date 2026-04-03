@@ -1,78 +1,94 @@
-# NixOS Configuration (nixos-config)
+# ❄️ NixOS Configuration: `nixos-btw`
 
-This repository contains a personal NixOS configuration for one machine, intended to be used as a base for reproducible local configuration.
+This repository houses a modularized, reproducible NixOS configuration tailored for a hybrid GPU laptop (Intel + NVIDIA) running **KDE Plasma 6**.
 
-## Layout
+---
 
-- `configuration.nix` - main NixOS system config.
-- `hardware-configuration.nix` - auto-generated hardware config from installer.
-- (other files as needed in future)
+## ⚠️ Important: Before You Begin
 
-## Goals
+### 1. Hardware Configuration
+The file `hardware-configuration.nix` is **unique to each machine**. 
+- If you are cloning this to a new device, **do not overwrite** your existing `hardware-configuration.nix`. 
+- If you don't have one, generate it first using:
+  ```bash
+  nixos-generate-config --show-config
+  ```
 
-- Desktop setup (Plasma 6, SDDM)
-- Hybrid GPU (Intel + NVIDIA prime offload)
-- French locale formatting with English system language
-- Automatic Nix store maintenance and periodic upgrades
-- Useful development tools installed system-wide
-- Minimal and readable personal configuration without multiple layers
+### 2. GPU Bus IDs
+NVIDIA PRIME offloading requires the exact PCI Bus IDs for your hardware. To find yours, run:
+```bash
+lspci -nn | grep -E "VGA|3D"
+```
+**Example Output:**
+`00:02.0 VGA ... Intel` -> Bus ID is `PCI:0@0:2:0`
+`01:00.0 3D ... NVIDIA` -> Bus ID is `PCI:1@0:0:0`
 
-## Key features
+Update these values in `modules/hardware.nix` before applying the configuration.
 
-- Boot:
-  - `systemd-boot`
-  - EFI enabled
-- Locale:
-  - `i18n.defaultLocale = "en_US.UTF-8"`
-  - `i18n.extraLocales = [ "fr_FR.UTF-8" ]`
-  - French `LC_*` categories forcing local conventions
-- Graphics:
-  - `modesetting`, `nvidia` driver
-  - `hardware.nvidia.prime.offload.enable = true`
-  - explicit `intelBusId` / `nvidiaBusId` for PRIME
-- Desktop:
-  - `services.xserver`
-  - `services.displayManager.sddm`
-  - `services.desktopManager.plasma6`
-- Sound:
-  - `services.pipewire` + `alsa + pulse`
-- Network:
-  - `networking.networkmanager.enable = true`
-- Git, Firefox, VS Code, Steam, gamemode etc enabled using `programs.*`
-- RNG:
-  - `nix.optimise` auto at 03:45
-  - `nix.gc` weekly, `--delete-older-than 30d`
-  - `system.autoUpgrade` daily at 04:00 (no auto reboot)
+---
 
-## Packages
+## 📂 Repository Structure
 
-System-wide packages are in `environment.systemPackages` (e.g. `vim`, `cmake`, `gcc`, `nodejs`, `vlc`, etc).  
-User-specific packages can be kept under `users.users.<username>.packages` when needed.
+The configuration is split into functional modules to maintain a clean and readable "Source of Truth."
 
-## How to use
+* **`configuration.nix`**: The entry point. Handles the bootloader and imports all modules.
+* **`hardware-configuration.nix`**: System-specific hardware scan (Kernel modules, file systems).
+* **`modules/`**:
+    * **`hardware.nix`**: NVIDIA PRIME, Bluetooth, and OpenGL/Graphics settings.
+    * **`desktop.nix`**: Plasma 6, SDDM, PipeWire audio, and Font collections.
+    * **`users.nix`**: User account definitions and user-specific app packages.
+    * **`programs.nix`**: Global packages, Shell (Zsh), Gaming (Steam), and Dev tools.
+    * **`system.nix`**: Locales (FR/US mix), Networking, and Maintenance (GC).
 
-1. Clone your repo:
-    - `git clone <repo> && cd nixos-config`
-2. Review `hardware-configuration.nix` and `configuration.nix`.
-3. Update hardware IDs if needed:
-    - `lspci -nn | grep -E "VGA|3D"`
-4. Rebuild:
-    - `sudo nixos-rebuild switch --upgrade`
-5. If no reboot is allowed by auto-upgrade, do manual:
-    - `sudo reboot` after `nixos-rebuild` if required.
+---
 
-## Notes
+## 🚀 Key Features
 
-- `system.stateVersion` pins the NixOS channel behavior;
-  update when upgrading the OS and testing.
-- `nixpkgs.config.allowUnfree = true` is set here to support things like NVidia firmware and some apps.
-- Keep the configuration file compact; split into modules only if the config grows significantly.
+| Category | Details |
+| :--- | :--- |
+| **Desktop** | KDE Plasma 6 (Wayland) with SDDM |
+| **Graphics** | NVIDIA PRIME Offload (Intel + NVIDIA) |
+| **Shell** | Zsh + Oh-My-Zsh (`refined` theme) & Aliases |
+| **Locale** | English (US) System with French (FR) Units/Formatting |
+| **Maintenance** | Weekly Garbage Collection & Daily Auto-upgrades |
+| **Gaming** | Steam, GameMode, and Wine/Proton utilities |
 
-## Troubleshooting
+---
 
-- GPU PRIME errors:
-  - ensure both `intelBusId` + `nvidiaBusId` are set with proper values.
-- Locale:
-  - check `locale` and `locale -k LC_TIME`
-- Auto-upgrade:
-  - if no `system.autoUpgrade` option, inspect your channel version.
+## 🛠 Usage
+
+### 1. Installation
+```bash
+# Backup your existing config first!
+sudo mv /etc/nixos /etc/nixos.bak
+sudo git clone <your-repo-url> /etc/nixos/
+# Restore your machine-specific hardware config
+sudo cp /etc/nixos.bak/hardware-configuration.nix /etc/nixos/
+```
+
+### 2. Management Aliases
+This config includes custom `zsh` aliases for ease of use:
+* `rebuild`: Apply changes locally (`sudo nixos-rebuild switch`)
+* `update`: Update channels and apply (`sudo nixos-rebuild switch --upgrade`)
+
+---
+
+## 📦 System Toolset
+- **Editors:** `Vim`, `Zed`
+- **Development:** `GCC`, `NodeJS`, `Nil (LSP)`, `CMake`, `KDiff3`
+- **Multimedia:** `VLC`, `EasyEffects`, `Kolourpaint`
+- **System:** `NVTop` (GPU Monitor), `Aria2`, `Wayland-utils`, `7-Zip`
+
+---
+
+## ⚙️ Maintenance Logic
+- **Store Optimization:** Daily at **03:45** to save disk space.
+- **Garbage Collection:** Weekly cleanup of generations older than **30 days**.
+- **Auto-Upgrade:** Daily check for system updates at **04:00**.
+
+---
+
+## 💡 Troubleshooting
+- **No Graphics:** Ensure `services.xserver.videoDrivers` includes both `modesetting` and `nvidia`.
+- **Audio Issues:** Check `easyeffects` if PipeWire sounds distorted or muted.
+- **State Version:** Hardcoded to `25.11`. Do not change this unless performing a manual migration.
