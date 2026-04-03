@@ -13,8 +13,7 @@
   # These will only be available to your user, keeping the system path clean.
   home.packages = with pkgs; [
     # --- Text Editors & IDEs ---
-    zed-editor # High-performance, modern code editor
-    nil # Language server for Nix (autocomplete)
+    nixd # Language server for Nix (autocomplete)
 
     # --- Development & Build Tools ---
     cmake
@@ -72,18 +71,29 @@
     };
   };
 
+  programs.zed-editor = {
+    enable = true;
+    userSettings = {
+      theme = "Gruvbox Dark";
+      ui_font_size = 16;
+      buffer_font_family = "JetBrainsMono Nerd Font";
+      autosave = "on_focus_change";
+      vim_mode = false;
+      telemetry = {
+        metrics = false;
+      };
+      languages = {
+        Nix = {
+          language_servers = [
+            "nixd"
+            "!nil"
+          ];
+        };
+      };
+    };
+  };
+
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
-  # --- Zed Editor Configuration ---
-  # This automatically creates ~/.config/zed/settings.json
-  home.file.".config/zed/settings.json".text = ''
-    {
-      "theme": "Gruvbox Dark",
-      "ui_font_size": 16,
-      "buffer_font_family": "JetBrainsMono Nerd Font",
-      "autosave": "on_focus_change",
-      "vim_mode": false
-    }
-  '';
 }
