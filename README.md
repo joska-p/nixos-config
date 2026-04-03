@@ -19,10 +19,6 @@ NVIDIA PRIME offloading requires the exact PCI Bus IDs for your hardware. To fin
 ```bash
 lspci -nn | grep -E "VGA|3D"
 ```
-**Example Output:**
-`00:02.0 VGA ... Intel` -> Bus ID is `PCI:0@0:2:0`
-`01:00.0 3D ... NVIDIA` -> Bus ID is `PCI:1@0:0:0`
-
 Update these values in `modules/hardware.nix` before applying the configuration.
 
 ---
@@ -31,14 +27,15 @@ Update these values in `modules/hardware.nix` before applying the configuration.
 
 The configuration is split into functional modules to maintain a clean and readable "Source of Truth."
 
-* **`configuration.nix`**: The entry point. Handles the bootloader and imports all modules.
+* **`configuration.nix`**: The main entry point. Handles the bootloader and imports all modules.
 * **`hardware-configuration.nix`**: System-specific hardware scan (Kernel modules, file systems).
 * **`modules/`**:
-    * **`hardware.nix`**: NVIDIA PRIME, Bluetooth, and OpenGL/Graphics settings.
-    * **`desktop.nix`**: Plasma 6, SDDM, PipeWire audio, and Font collections.
-    * **`users.nix`**: User account definitions and user-specific app packages.
-    * **`programs.nix`**: Global packages, Shell (Zsh), Gaming (Steam), and Dev tools.
-    * **`system.nix`**: Locales (FR/US mix), Networking, and Maintenance (GC).
+    * **`hardware.nix`**: NVIDIA PRIME (Offload mode), Bluetooth (Experimental/FastConnect), and Graphics settings.
+    * **`desktop.nix`**: KDE Plasma 6 (Wayland), SDDM, PipeWire audio, and extensive Font collections (Nerd Fonts, Fira Code).
+    * **`users.nix`**: Defines the `muratha` user and bridges to Home Manager.
+    * **`home.nix`**: **Home Manager** configuration for the user. Manages Git, Zsh, and Zed editor settings.
+    * **`programs.nix`**: System-wide programs, Steam (with GameMode), and **nix-ld** for unpatched binary support.
+    * **`system.nix`**: Locales (FR/US mix), Networking (NetworkManager), and Maintenance (GC/Auto-optimise).
 
 ---
 
@@ -46,12 +43,13 @@ The configuration is split into functional modules to maintain a clean and reada
 
 | Category | Details |
 | :--- | :--- |
-| **Desktop** | KDE Plasma 6 (Wayland) with SDDM |
-| **Graphics** | NVIDIA PRIME Offload (Intel + NVIDIA) |
-| **Shell** | Zsh + Oh-My-Zsh (`refined` theme) & Aliases |
-| **Locale** | English (US) System with French (FR) Units/Formatting |
-| **Maintenance** | Weekly Garbage Collection & Daily Auto-upgrades |
-| **Gaming** | Steam, GameMode, and Wine/Proton utilities |
+| **Desktop** | KDE Plasma 6 with SDDM (Auto-Numlock enabled) |
+| **Graphics** | NVIDIA PRIME Offload (Intel + NVIDIA) with 32-bit support |
+| **Shell** | Zsh + Oh-My-Zsh (`refined` theme) managed by Home Manager |
+| **Compatibility** | **nix-ld** enabled for running unpatched binaries (LSPs, etc.) |
+| **Audio** | PipeWire with ALSA/Pulse support and **EasyEffects** |
+| **Maintenance** | Weekly Garbage Collection and Automatic Store Optimization |
+| **Gaming** | Steam, ProtonTricks, and GameMode (Renice 10, GPU device 1) |
 
 ---
 
@@ -67,28 +65,30 @@ sudo cp /etc/nixos.bak/hardware-configuration.nix /etc/nixos/
 ```
 
 ### 2. Management Aliases
-This config includes custom `zsh` aliases for ease of use:
+This config includes custom `zsh` aliases for quick management:
 * `rebuild`: Apply changes locally (`sudo nixos-rebuild switch`)
 * `update`: Update channels and apply (`sudo nixos-rebuild switch --upgrade`)
+* `ll`: Long list format (`ls -l`)
 
 ---
 
-## 📦 System Toolset
-- **Editors:** `Vim`, `Zed`
-- **Development:** `GCC`, `NodeJS`, `Nil (LSP)`, `CMake`, `KDiff3`
-- **Multimedia:** `VLC`, `EasyEffects`, `Kolourpaint`
-- **System:** `NVTop` (GPU Monitor), `Aria2`, `Wayland-utils`, `7-Zip`
+## 📦 System & User Toolset
+- **Editors:** `Vim`, `Zed` (with Gruvbox Dark & Nixd integration), `VS Code`
+- **Development:** `GCC`, `NodeJS`, `nixd` (Nix LSP), `CMake`, `KDiff3`
+- **Multimedia:** `VLC`, `EasyEffects`, `Kolourpaint`, `KCalc`
+- **Utilities:** `bat`, `aria2`, `uget`, `nvtop`, `p7zip`, `wl-clipboard`
+- **Gaming:** `Steam`, `Wine`, `Winetricks`, `ProtonPlus`
 
 ---
 
 ## ⚙️ Maintenance Logic
-- **Store Optimization:** Daily at **03:45** to save disk space.
+- **Store Optimization:** Enabled (`nix.optimise.automatic = true`) to save disk space.
 - **Garbage Collection:** Weekly cleanup of generations older than **30 days**.
-- **Auto-Upgrade:** Daily check for system updates at **04:00**.
+- **Auto-Upgrade:** Enabled to keep the system up to date.
 
 ---
 
 ## 💡 Troubleshooting
 - **No Graphics:** Ensure `services.xserver.videoDrivers` includes both `modesetting` and `nvidia`.
-- **Audio Issues:** Check `easyeffects` if PipeWire sounds distorted or muted.
-- **State Version:** Hardcoded to `25.11`. Do not change this unless performing a manual migration.
+- **Zed LSP:** Ensure `nix-ld` is active if language servers fail to start.
+- **State Version:** Set to `25.11` for both System and Home Manager.
