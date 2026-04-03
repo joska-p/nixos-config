@@ -30,6 +30,7 @@
     kdiff3 # File comparison tool
 
     # --- Desktop Apps ---
+    flatpak
     kdePackages.kcalc
     kdePackages.kolourpaint
 
@@ -60,9 +61,25 @@
     syntaxHighlighting.enable = true;
 
     shellAliases = {
+      # --- General ---
       ll = "ls -l";
+      la = "ls -lah"; # Show all files with detailed info and human-readable sizes
+      ".." = "cd ..";
+      "..." = "cd ../..";
+      v = "vim";
+      z = "zed";
+
+      # --- NixOS Management ---
       rebuild = "sudo nixos-rebuild switch";
       update = "sudo nixos-rebuild switch --upgrade";
+      nix-clean = "sudo nix-collect-garbage -d"; # Deep clean old generations
+      nix-list = "nix-env --list-generations --profile /nix/var/nix/profiles/system";
+
+      # --- Git ---
+      gs = "git status";
+      ga = "git add";
+      gc = "git commit";
+      gp = "git push";
     };
 
     oh-my-zsh = {

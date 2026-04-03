@@ -57,7 +57,5 @@
 
     # KDE/System helpers
     kdePackages.discover
-    kdePackages.ksystemlog
-    kdePackages.sddm-kcm
   ];
 }
