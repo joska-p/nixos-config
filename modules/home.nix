@@ -19,6 +19,7 @@
     cmake
     gcc
     nodejs
+    nixfmt
 
     # --- Multimedia & Audio ---
     vlc
@@ -106,6 +107,37 @@
             "!nil"
           ];
         };
+      };
+    };
+  };
+
+  programs.gemini-cli = {
+    enable = true;
+    settings = {
+      context = {
+        loadMemoryFromIncludeDirectories = true;
+      };
+      general = {
+        preferredEditor = "zeditor";
+        previewFeatures = true;
+        vimMode = true;
+      };
+      ide = {
+        enabled = true;
+      };
+      privacy = {
+        usageStatisticsEnabled = false;
+      };
+      security = {
+        auth = {
+          selectedType = "oauth-personal";
+        };
+      };
+      tools = {
+        autoAccept = false;
+      };
+      ui = {
+        theme = "Default";
       };
     };
   };
