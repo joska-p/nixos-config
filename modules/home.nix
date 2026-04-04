@@ -111,37 +111,6 @@
     };
   };
 
-  programs.gemini-cli = {
-    enable = true;
-    settings = {
-      context = {
-        loadMemoryFromIncludeDirectories = true;
-      };
-      general = {
-        preferredEditor = "zeditor";
-        previewFeatures = true;
-        vimMode = true;
-      };
-      ide = {
-        enabled = true;
-      };
-      privacy = {
-        usageStatisticsEnabled = false;
-      };
-      security = {
-        auth = {
-          selectedType = "oauth-personal";
-        };
-      };
-      tools = {
-        autoAccept = false;
-      };
-      ui = {
-        theme = "Default";
-      };
-    };
-  };
-
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
