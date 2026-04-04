@@ -48,6 +48,7 @@
     p7zip
     aria2
     zenity
+    numlockx
 
     # System monitoring & hardware tools
     nvtopPackages.full # GPU monitor
