@@ -16,10 +16,10 @@
     nixd # Language server for Nix (autocomplete)
 
     # --- Development & Build Tools ---
-    cmake
-    gcc
-    nodejs
-    nixfmt
+    cmake # Build system for C and C++
+    gcc # Compiler for C and C++
+    nodejs # JavaScript runtime
+    nixfmt # Formatter for Nix files
 
     # --- Multimedia & Audio ---
     vlc
