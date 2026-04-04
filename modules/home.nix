@@ -7,7 +7,10 @@
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
   # introduces backwards incompatible changes.
-  home.stateVersion = "25.11"; # Match this with your NixOS version
+  #
+  # You should not change this value, even if you update NixOS.
+  # See the Home Manager release notes for a list of state version changes.
+  home.stateVersion = "25.11"; # Match this with your initial install version
 
   # The home.packages option allows you to install user-specific software.
   # These will only be available to your user, keeping the system path clean.
@@ -71,8 +74,8 @@
       z = "zed";
 
       # --- NixOS Management ---
-      rebuild = "sudo nixos-rebuild switch";
-      update = "sudo nixos-rebuild switch --upgrade";
+      rebuild = "sudo nixos-rebuild switch --flake .";
+      update = "sudo nixos-rebuild switch --upgrade --flake .";
       nix-clean = "sudo nix-collect-garbage -d"; # Deep clean old generations
       nix-list = "nix-env --list-generations --profile /nix/var/nix/profiles/system";
 
