@@ -55,6 +55,8 @@
     vulkan-tools
     wayland-utils
     wl-clipboard
+    usbutils
+    pciutils
 
     # KDE/System helpers
     kdePackages.discover
