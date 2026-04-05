@@ -1,5 +1,12 @@
 { lib, ... }:
 {
+  services.udev.extraRules = ''
+    # Razer DeathAdder V3 - Disable USB Autosuspend
+    ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="1532", ATTR{idProduct}=="00b2", ATTR{power/control}="on"
+    # Xbox One Controller - Disable USB Autosuspend
+    ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="045e", ATTR{idProduct}=="02ea", ATTR{power/control}="on"
+  '';
+
   hardware.enableRedistributableFirmware = lib.mkDefault true;
   hardware.graphics = {
     enable = true;
