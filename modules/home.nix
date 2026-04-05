@@ -1,5 +1,11 @@
 { pkgs, ... }:
 {
+  imports = [
+    ./home-git.nix
+    ./home-zsh.nix
+    ./home-zed.nix
+  ];
+
   # Home Manager needs a bit of information about you and the paths it should manage.
   home.username = "muratha";
   home.homeDirectory = "/home/muratha";
@@ -44,77 +50,6 @@
     protonplus
   ];
 
-  # Manage Git configuration declaratively.
-  programs.git = {
-    enable = true;
-    settings = {
-      user = {
-        name = "joska";
-        email = "jpotin@gmail.com";
-      };
-      init.defaultBranch = "main";
-    };
-  };
-
-  # Your Zsh configuration, moved from the system level.
-  # Home Manager is much better at managing shell configs.
-  programs.zsh = {
-    enable = true;
-    enableCompletion = true;
-    autosuggestion.enable = true;
-    syntaxHighlighting.enable = true;
-
-    shellAliases = {
-      # --- General ---
-      ll = "ls -l";
-      la = "ls -lah"; # Show all files with detailed info and human-readable sizes
-      ".." = "cd ..";
-      "..." = "cd ../..";
-      v = "vim";
-      z = "zed";
-
-      # --- NixOS Management ---
-      rebuild = "sudo nixos-rebuild switch --flake .";
-      update = "sudo nixos-rebuild switch --upgrade --flake .";
-      nix-clean = "sudo nix-collect-garbage -d"; # Deep clean old generations
-      nix-list = "nix-env --list-generations --profile /nix/var/nix/profiles/system";
-
-      # --- Git ---
-      gs = "git status";
-      ga = "git add";
-      gc = "git commit";
-      gp = "git push";
-    };
-
-    oh-my-zsh = {
-      enable = true;
-      theme = "refined";
-    };
-  };
-
-  programs.zed-editor = {
-    enable = true;
-    userSettings = {
-      theme = "Gruvbox Dark";
-      ui_font_size = 16;
-      buffer_font_family = "JetBrainsMono Nerd Font";
-      autosave = "on_focus_change";
-      vim_mode = false;
-      telemetry = {
-        metrics = false;
-      };
-      languages = {
-        Nix = {
-          language_servers = [
-            "nixd"
-            "!nil"
-          ];
-        };
-      };
-    };
-  };
-
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
-
 }
