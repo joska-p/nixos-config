@@ -5,7 +5,6 @@
     enable = true;
     # Everything inside of these brackets are Zed options
     userSettings = {
-
       agent_servers = {
         "Gemini CLI Custom" = {
           type = "custom";
@@ -16,6 +15,11 @@
           ];
           env = { };
         };
+      };
+
+      node = {
+        path = lib.getExe pkgs.nodejs;
+        npm_path = lib.getExe' pkgs.nodejs "npm";
       };
 
       languages = {
