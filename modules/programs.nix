@@ -20,51 +20,52 @@
   ];
 
   # System-wide browser and tools
-programs.firefox = {
-  enable = true;
+  programs.firefox = {
+    enable = true;
 
-  languagePacks = [ "en-US" "fr" ];
+    languagePacks = [
+      "en-US"
+      "fr"
+    ];
 
-  policies = {
-    # Updates & Background Services
-    AppAutoUpdate                 = false;
-    BackgroundAppUpdate           = false;
+    policies = {
+      # Updates & Background Services
+      AppAutoUpdate = false;
+      BackgroundAppUpdate = false;
 
-    # Feature Disabling
-    DisableBuiltinPDFViewer       = true;
-    DisableFirefoxStudies         = true;
-    DisableFirefoxScreenshots     = true;
-    DisableForgetButton           = true;
-    DisableMasterPasswordCreation = true;
-    DisableProfileImport          = true;
-    DisableProfileRefresh         = true;
-    DisableSetDesktopBackground   = true;
-    DisablePocket                 = true;
-    DisableTelemetry              = true;
-    DisableFormHistory            = true;
-    DisablePasswordReveal         = true;
+      # Feature Disabling
+      DisableBuiltinPDFViewer = true;
+      DisableFirefoxStudies = true;
+      DisableFirefoxScreenshots = true;
+      DisableForgetButton = true;
+      DisableMasterPasswordCreation = true;
+      DisableProfileImport = true;
+      DisableProfileRefresh = true;
+      DisableSetDesktopBackground = true;
+      DisablePocket = true;
+      DisableTelemetry = true;
+      DisableFormHistory = true;
+      DisablePasswordReveal = true;
 
-    # Access Restrictions
-    BlockAboutConfig              = false;
-    BlockAboutProfiles            = true;
-    BlockAboutSupport             = true;
+      # Access Restrictions
+      BlockAboutConfig = false;
+      BlockAboutProfiles = true;
+      BlockAboutSupport = true;
 
-    # UI and Behavior
-    DisplayMenuBar                = "never";
-    DontCheckDefaultBrowser       = true;
-    HardwareAcceleration          = false;
-    OfferToSaveLogins             = false;
+      # UI and Behavior
+      DisplayMenuBar = "never";
+      DontCheckDefaultBrowser = true;
+      HardwareAcceleration = false;
+      OfferToSaveLogins = false;
 
-  profiles.default.search = {
-    force           = true;
-    default         = "DuckDuckGo";
-    privateDefault  = "DuckDuckGo";
+      profiles.default.search = {
+        force = true;
+        default = "DuckDuckGo";
+        privateDefault = "DuckDuckGo";
 
-
+      };
     };
   };
-};
-
 
   programs.vscode.enable = true; # VS Code often needs system-level help for auth/keyring
 
