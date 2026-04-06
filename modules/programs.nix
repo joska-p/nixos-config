@@ -106,5 +106,7 @@
 
     # KDE/System helpers
     kdePackages.discover
+    sddm-astronaut
+    kdePackages.qtmultimedia # dependency for sddm-astronaut. Should be auto installed  but it's a known issue.
   ];
 }

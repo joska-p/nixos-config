@@ -11,8 +11,11 @@
       variant = "";
     };
   };
-  services.displayManager.sddm.enable = true;
-  services.displayManager.sddm.autoNumlock = true;
+  services.displayManager.sddm = {
+    enable = true;
+    theme = "sddm-astronaut-theme";
+    autoNumlock = true;
+  };
   services.desktopManager.plasma6.enable = true;
   environment.plasma6.excludePackages = with pkgs; [
     kdePackages.elisa
