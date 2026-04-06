@@ -41,8 +41,6 @@
 
     # --- Desktop Apps ---
     flatpak
-    kdePackages.kcalc
-    kdePackages.kolourpaint
 
     # --- Gaming & Windows Compatibility ---
     wine

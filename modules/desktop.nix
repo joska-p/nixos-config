@@ -13,7 +13,6 @@
   };
   services.displayManager.sddm = {
     enable = true;
-    theme = "sddm-astronaut-theme";
     autoNumlock = true;
   };
   services.desktopManager.plasma6.enable = true;

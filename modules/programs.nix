@@ -99,14 +99,23 @@
     nvtopPackages.full # GPU monitor
     mesa-demos
     vulkan-tools
-    wayland-utils
-    wl-clipboard
     usbutils
     pciutils
 
-    # KDE/System helpers
-    kdePackages.discover
-    sddm-astronaut
-    kdePackages.qtmultimedia # dependency for sddm-astronaut. Should be auto installed  but it's a known issue.
+    # KDE Utilities
+    kdePackages.discover # Optional: Software center for Flatpaks/firmware updates
+    kdePackages.kcalc # Calculator
+    kdePackages.kcharselect # Character map
+    kdePackages.kcolorchooser # Color picker
+    kdePackages.kolourpaint # Simple paint program
+    kdePackages.ksystemlog # System log viewer
+    kdiff3 # File/directory comparison tool
+
+    # Hardware/System Utilities (Optional)
+    kdePackages.isoimagewriter # Write hybrid ISOs to USB
+    kdePackages.partitionmanager # Disk and partition management
+    hardinfo2 # System benchmarks and hardware info
+    wayland-utils # Wayland diagnostic tools
+    wl-clipboard # Wayland copy/paste support
   ];
 }
