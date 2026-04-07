@@ -3,11 +3,15 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ./modules/hardware.nix
-    ./modules/desktop.nix
-    ./modules/users.nix
-    ./modules/programs.nix
-    ./modules/system.nix
+    ../../modules/system/hardware.nix
+    ../../modules/system/desktop.nix
+    ../../modules/system/users.nix
+    ../../modules/system/programs.nix
+    ../../modules/system/system.nix
+    ../../modules/system/firefox.nix
+    ../../modules/system/gaming.nix
+    ../../modules/system/nix-ld.nix
+    ../../modules/system/fonts.nix
   ];
 
   boot.loader.systemd-boot.enable = true;

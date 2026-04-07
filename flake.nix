@@ -24,7 +24,7 @@
         specialArgs = { inherit inputs; };
         modules = [
           # Import the main configuration file
-          ./configuration.nix
+          ./hosts/nixos-btw/configuration.nix
 
           # Include the Home Manager module
           home-manager.nixosModules.home-manager

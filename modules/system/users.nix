@@ -18,6 +18,6 @@
     useGlobalPkgs = true; # Use the system's nixpkgs version
     useUserPackages = true; # Install packages into /etc/profiles/per-user/muratha
     backupFileExtension = "backup";
-    users.muratha = import ./home.nix;
+    users.muratha = import ../home;
   };
 }

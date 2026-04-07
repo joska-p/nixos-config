@@ -4,27 +4,47 @@ A modular, Flake-based NixOS configuration tailored for a hybrid GPU laptop (Int
 
 ---
 
-## 🏗️ Architecture & Modules
+## 🏗️ Architecture & Organization
 
-The configuration is organized into functional modules to maintain a clean "Source of Truth."
+The configuration is organized into a clean, hierarchical structure to separate host-specific settings from reusable system modules and user configurations.
 
-*   **`flake.nix`**: The entry point. Defines inputs (NixOS, Home Manager) and system outputs.
-*   **`configuration.nix`**: Core system entry point. Handles bootloader and imports.
-*   **`modules/`**:
-    *   **`system.nix`**: Core OS settings (Networking, Locales, GC, Nix settings).
-    *   **`desktop.nix`**: Desktop Environment (Plasma 6), Display Manager (SDDM), and Audio (PipeWire).
-    *   **`hardware.nix`**: Graphics (NVIDIA PRIME), Bluetooth, and firmware.
-    *   **`programs.nix`**: System-level applications, Steam, and `nix-ld` for binary compatibility.
-    *   **`users.nix`**: User definitions and Home Manager bridge.
-    *   **`home.nix`**: User-space configuration (Shell, Git, Editor settings).
+### 🏠 Hosts (`hosts/`)
+Machine-specific configurations.
+*   **`hosts/nixos-btw/`**: The main host configuration.
+    *   `configuration.nix`: Core entry point for this machine.
+    *   `hardware-configuration.nix`: Auto-generated hardware scan.
+
+### 📦 System Modules (`modules/system/`)
+Reusable system-level configurations.
+*   `desktop.nix`: Desktop Environment (Plasma 6), Display Manager (SDDM), and Audio (PipeWire).
+*   `hardware.nix`: Graphics (NVIDIA PRIME), Bluetooth, and firmware.
+*   `system.nix`: Core OS settings (Networking, Locales, GC, Nix settings).
+*   `users.nix`: User definitions and Home Manager bridge.
+*   `programs.nix`: General system-wide packages and VS Code.
+*   **Dedicated Program Modules**:
+    *   `firefox.nix`: Extensive Firefox policy configuration.
+    *   `gaming.nix`: Steam, GameMode, and gaming optimizations.
+    *   `nix-ld.nix`: Binary compatibility for unpatched tools (LSPs, etc.).
+    *   `fonts.nix`: Curated set of Nerd Fonts and system fonts.
+
+### 👤 User Modules (`modules/home/`)
+Home Manager configurations for user-space.
+*   `default.nix`: Main Home Manager entry point.
+*   `zsh.nix`: Shell configuration (Zsh + Oh-My-Zsh).
+*   `git.nix`: Git identity and aliases.
+*   `zed.nix`: Zed editor settings and custom agents.
+
+### 🖼️ Assets (`assets/`)
+Static files used by the configuration.
+*   `wallpaper.jpg`: System-wide desktop and SDDM background.
 
 ---
 
 ## 🚀 Key Features
 
-*   **Modern Desktop**: KDE Plasma 6 (Wayland) with a curated set of Nerd Fonts.
+*   **Modern Desktop**: KDE Plasma 6 (Wayland) with a beautiful custom wallpaper.
 *   **Hybrid Graphics**: NVIDIA PRIME Offload mode pre-configured for Intel/NVIDIA laptops.
-*   **Declarative User Env**: Shell (Zsh + Oh-My-Zsh), Git, and Editor (Zed) managed via Home Manager.
+*   **Declarative User Env**: Shell, Git, and Editor (Zed) managed via Home Manager.
 *   **Compatibility**: `nix-ld` enabled to run unpatched binaries (perfect for VS Code/Zed LSPs).
 *   **Maintenance**: Automated weekly garbage collection and nix-store optimization.
 *   **Gaming**: Steam, GameMode, and Wine compatibility tools pre-installed.
@@ -36,21 +56,18 @@ The configuration is organized into functional modules to maintain a clean "Sour
 ### 1. Hardware Prerequisites
 This configuration requires your machine-specific hardware scan. If setting up on a new machine:
 1.  Generate a base config: `nixos-generate-config --show-config`
-2.  Ensure your `hardware-configuration.nix` is present in the root of this repo.
-3.  **GPU Bus IDs**: Update `intelBusId` and `nvidiaBusId` in `modules/hardware.nix`. Find them using:
-    ```bash
-    lspci -nn | grep -E "VGA|3D"
-    ```
+2.  Place your `hardware-configuration.nix` in the host's directory (e.g., `hosts/nixos-btw/`).
+3.  **GPU Bus IDs**: Update `intelBusId` and `nvidiaBusId` in `modules/system/hardware.nix`.
 
 ### 2. User Personalization
-- **Hostname**: Set in `modules/system.nix`.
-- **Username**: Update in `modules/users.nix` and `modules/home.nix`.
+- **Hostname**: Set in `modules/system/system.nix`.
+- **Username**: Update in `modules/system/users.nix` and `modules/home/default.nix`.
 
 ---
 
 ## 💻 Usage
 
-Since this is a Flake-based configuration, you can apply changes directly from the repository directory without symlinking to `/etc/nixos`.
+Since this is a Flake-based configuration, you can apply changes directly from the repository directory.
 
 ### Apply Configuration
 ```bash
@@ -69,11 +86,3 @@ The configuration includes several Zsh aliases for convenience:
 *   `nix-clean`: Deep clean old generations.
 *   `nix-list`: List system generations.
 *   `gs` / `ga` / `gc` / `gp`: Git workflow shortcuts.
-
----
-
-## ⚙️ Maintenance
-The system is configured to stay lean automatically:
-- **Garbage Collection**: Runs weekly, removing generations older than 30 days.
-- **Store Optimization**: Automatically hardlinks duplicate files in the Nix store.
-- **Auto-Upgrade**: Periodically checks for system updates.

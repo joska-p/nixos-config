@@ -3,7 +3,7 @@ let
   # Define the custom background package with the correct relative path
   background-package = pkgs.stdenvNoCC.mkDerivation {
     name = "background-image";
-    src = ./wallpaper.jpg; # Place wallpaper.jpg in the same directory as this config file
+    src = ../../assets/wallpaper.jpg; # Place wallpaper.jpg in the same directory as this config file
     dontUnpack = true;
     installPhase = ''
       cp $src $out
@@ -18,85 +18,10 @@ in
   # --- System-level Programs ---
   # These are programs that need special integration with the OS
 
-  # Enable nix-ld to run unpatched binaries (like Zed language servers)
-  programs.nix-ld.enable = true;
-  programs.nix-ld.libraries = with pkgs; [
-    stdenv.cc.cc
-    zlib
-    fuse3
-    icu
-    nss
-    openssl
-    curl
-    expat
-  ];
-
-  # System-wide browser and tools
-  programs.firefox = {
-    enable = true;
-
-    languagePacks = [
-      "en-US"
-      "fr"
-    ];
-
-    policies = {
-      # Updates & Background Services
-      AppAutoUpdate = false;
-      BackgroundAppUpdate = false;
-
-      # Feature Disabling
-      DisableBuiltinPDFViewer = true;
-      DisableFirefoxStudies = true;
-      DisableFirefoxScreenshots = true;
-      DisableForgetButton = true;
-      DisableMasterPasswordCreation = true;
-      DisableProfileImport = true;
-      DisableProfileRefresh = true;
-      DisableSetDesktopBackground = true;
-      DisablePocket = true;
-      DisableTelemetry = true;
-      DisableFormHistory = true;
-      DisablePasswordReveal = true;
-
-      # Access Restrictions
-      BlockAboutConfig = false;
-      BlockAboutProfiles = true;
-      BlockAboutSupport = true;
-
-      # UI and Behavior
-      DisplayMenuBar = "never";
-      DontCheckDefaultBrowser = true;
-      HardwareAcceleration = false;
-      OfferToSaveLogins = false;
-
-      profiles.default.search = {
-        force = true;
-        default = "DuckDuckGo";
-        privateDefault = "DuckDuckGo";
-
-      };
-    };
-  };
-
   programs.vscode.enable = true; # VS Code often needs system-level help for auth/keyring
 
   # Zsh must be enabled at the system level to be a valid login shell
   programs.zsh.enable = true;
-
-  # Steam and Gaming optimizations
-  programs.steam = {
-    enable = true;
-    protontricks.enable = true;
-  };
-
-  programs.gamemode = {
-    enable = true;
-    settings = {
-      general.renice = 10;
-      gpu.gpu_device = 1;
-    };
-  };
 
   # --- System-wide Packages ---
   # These are tools that are useful for all users or system maintenance
