@@ -27,6 +27,13 @@
         npm_path = lib.getExe' pkgs.nodejs "npm";
       };
 
+      hour_format = "hour24";
+      auto_update = false;
+
+      terminal = {
+        font_family = "JetBrainsMono Nerd Font";
+      };
+
       languages = {
         Nix = {
           language_servers = [
@@ -35,6 +42,13 @@
           ];
         };
       };
+
+      vim_mode = false;
+
+      # Tell Zed to use direnv and direnv can use a flake.nix environment
+      load_direnv = "shell_hook";
+      base_keymap = "VSCode";
+
       theme = "Gruvbox Dark";
       ui_font_size = 16;
       buffer_font_size = 16;
