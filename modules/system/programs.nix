@@ -27,22 +27,22 @@ in
   # These are tools that are useful for all users or system maintenance
   environment.systemPackages = with pkgs; [
     # Core utilities
-    vim
-    p7zip
-    aria2
-    zenity
-    libnotify # For notify-send
+    vim # Terminal text editor
+    p7zip # File archiver for .7z
+    aria2 # Multi-protocol download utility
+    zenity # GUI dialog boxes from shell
+    libnotify # System notifications (notify-send)
 
     # System monitoring & hardware tools
-    nvtopPackages.full # GPU monitor
-    mesa-demos
-    vulkan-tools
-    usbutils
-    pciutils
+    nvtopPackages.full # GPU status viewer
+    mesa-demos # OpenGL/graphics diagnostic tools
+    vulkan-tools # Vulkan diagnostic tools
+    usbutils # USB device listing (lsusb)
+    pciutils # PCI device listing (lspci)
 
     # KDE Utilities
-    kdePackages.discover # Optional: Software center for Flatpaks/firmware updates
-    kdePackages.kcalc # Calculator
+    kdePackages.discover # Software center
+    kdePackages.kcalc # Scientific calculator
     kdePackages.kcharselect # Character map
     kdePackages.kcolorchooser # Color picker
     kdePackages.kolourpaint # Simple paint program
@@ -50,9 +50,9 @@ in
     kdiff3 # File/directory comparison tool
     kdePackages.sddm-kcm # SDDM theme configuration
 
-    # Hardware/System Utilities (Optional)
-    kdePackages.isoimagewriter # Write hybrid ISOs to USB
-    kdePackages.partitionmanager # Disk and partition management
+    # Hardware/System Utilities
+    kdePackages.isoimagewriter # USB ISO writer
+    kdePackages.partitionmanager # Disk partition management
     hardinfo2 # System benchmarks and hardware info
     wayland-utils # Wayland diagnostic tools
     wl-clipboard # Wayland copy/paste support

@@ -1,7 +1,10 @@
 { vars, ... }:
 {
+  # --- Networking ---
   networking.hostName = vars.hostname;
   networking.networkmanager.enable = true;
+
+  # --- Localization ---
   time.timeZone = "Europe/Paris";
   i18n.defaultLocale = "en_US.UTF-8";
   i18n.extraLocaleSettings = {
@@ -17,6 +20,7 @@
   };
   console.keyMap = "fr";
 
+  # --- Nix Settings & Optimization ---
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
@@ -28,6 +32,7 @@
     options = "--delete-older-than 30d";
   };
 
+  # --- Auto-Upgrades ---
   system.autoUpgrade = {
     enable = true;
     flake = vars.configDir;

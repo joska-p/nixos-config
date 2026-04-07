@@ -1,7 +1,5 @@
 { pkgs, ... }:
 {
-  # Your Zsh configuration.
-  # Home Manager is much better at managing shell configs.
   programs.zsh = {
     enable = true;
     enableCompletion = true;
@@ -11,7 +9,7 @@
     shellAliases = {
       # --- General ---
       ll = "ls -l";
-      la = "ls -lah"; # Show all files with detailed info and human-readable sizes
+      la = "ls -lah";
       ".." = "cd ..";
       "..." = "cd ../..";
       v = "vim";
@@ -20,7 +18,7 @@
       # --- NixOS Management ---
       rebuild = "sudo nixos-rebuild switch --flake .";
       update = "sudo nixos-rebuild switch --upgrade --flake .";
-      nix-clean = "sudo nix-collect-garbage -d"; # Deep clean old generations
+      nix-clean = "sudo nix-collect-garbage -d";
       nix-list = "nix-env --list-generations --profile /nix/var/nix/profiles/system";
 
       # --- Git ---

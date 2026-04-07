@@ -1,22 +1,21 @@
 { pkgs, vars, ... }:
 {
-  # Define the main user account
+  # Main user account
   users.users.${vars.username} = {
     isNormalUser = true;
     description = vars.username;
-    shell = pkgs.zsh; # Use Zsh as the default login shell
+    shell = pkgs.zsh;
     extraGroups = [
-      "networkmanager" # Allow user to manage networks
-      "wheel" # Enable sudo access
-      "gamemode" # Allow user to use Feral Gamemode
+      "networkmanager"
+      "wheel"
+      "gamemode"
     ];
   };
 
-  # Home Manager configuration for the user
-  # This section ties the system configuration to your home environment
+  # Home Manager bridge
   home-manager = {
-    useGlobalPkgs = true; # Use the system's nixpkgs version
-    useUserPackages = true; # Install packages into /etc/profiles/per-user
+    useGlobalPkgs = true;
+    useUserPackages = true;
     backupFileExtension = "backup";
     extraSpecialArgs = { inherit vars; };
     users.${vars.username} = import ../home;
