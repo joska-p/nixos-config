@@ -1,4 +1,4 @@
-# ❄️ NixOS Configuration: `nixos-btw`
+# ❄️ NixOS Configuration: `nixos-laptop`
 
 A modular, Flake-based NixOS configuration tailored for a hybrid GPU laptop (Intel + NVIDIA) running **KDE Plasma 6**. This setup uses **Home Manager** as a NixOS module for a unified system and user environment.
 
@@ -10,7 +10,7 @@ The configuration is organized into a clean, hierarchical structure to separate 
 
 ### 🏠 Hosts (`hosts/`)
 Machine-specific configurations.
-*   **`hosts/nixos-btw/`**: The main host configuration.
+*   **`hosts/laptop/`**: The main host configuration.
     *   `configuration.nix`: Core entry point for this machine.
     *   `hardware-configuration.nix`: Auto-generated hardware scan.
 
@@ -57,7 +57,7 @@ Static files used by the configuration.
 ### 1. Hardware Prerequisites
 This configuration requires your machine-specific hardware scan. If setting up on a new machine:
 1.  Generate a base config: `nixos-generate-config --show-config`
-2.  Place your `hardware-configuration.nix` in the host's directory (e.g., `hosts/nixos-btw/`).
+2.  Place your `hardware-configuration.nix` in the host's directory (e.g., `hosts/laptop/`).
 3.  **GPU Bus IDs**: Update `intelBusId` and `nvidiaBusId` in `modules/system/hardware.nix`.
 
 ### 2. User Personalization

@@ -1,6 +1,6 @@
-{ ... }:
+{ vars, ... }:
 {
-  networking.hostName = "nixos-btw";
+  networking.hostName = vars.hostname;
   networking.networkmanager.enable = true;
   time.timeZone = "Europe/Paris";
   i18n.defaultLocale = "en_US.UTF-8";
@@ -30,7 +30,7 @@
 
   system.autoUpgrade = {
     enable = true;
-    flake = "/home/muratha/nixos-config";
+    flake = vars.configDir;
     flags = [
       "--update-input"
       "nixpkgs"

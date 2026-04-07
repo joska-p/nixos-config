@@ -19,12 +19,21 @@
       home-manager,
       ...
     }@inputs:
+    let
+      vars = rec {
+        username = "muratha";
+        hostname = "nixos-laptop";
+        gitName = "joska";
+        gitEmail = "jpotin@gmail.com";
+        configDir = "/home/${username}/nixos-config";
+      };
+    in
     {
-      nixosConfigurations.nixos-btw = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs; };
+      nixosConfigurations.${vars.hostname} = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs vars; };
         modules = [
           # Import the main configuration file
-          ./hosts/nixos-btw/configuration.nix
+          ./hosts/laptop/configuration.nix
 
           # Include the Home Manager module
           home-manager.nixosModules.home-manager

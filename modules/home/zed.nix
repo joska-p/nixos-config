@@ -1,4 +1,9 @@
-{ pkgs, lib, ... }:
+{
+  pkgs,
+  lib,
+  vars,
+  ...
+}:
 
 {
   programs.zed-editor = {
@@ -10,7 +15,7 @@
           type = "custom";
           command = "node";
           args = [
-            "/home/muratha/.local/share/zed/external_agents/gemini/0.36.0/node_modules/@google/gemini-cli/bundle/gemini.js"
+            "/home/${vars.username}/.local/share/zed/external_agents/gemini/0.36.0/node_modules/@google/gemini-cli/bundle/gemini.js"
             "--acp"
           ];
           env = { };

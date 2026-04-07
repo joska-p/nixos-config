@@ -1,12 +1,12 @@
-{ pkgs, ... }:
+{ pkgs, vars, ... }:
 {
   # Manage Git configuration declaratively.
   programs.git = {
     enable = true;
     settings = {
       user = {
-        name = "joska";
-        email = "jpotin@gmail.com";
+        name = vars.gitName;
+        email = vars.gitEmail;
       };
       init.defaultBranch = "main";
     };
