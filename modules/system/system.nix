@@ -28,5 +28,15 @@
     options = "--delete-older-than 30d";
   };
 
-  system.autoUpgrade.enable = true;
+  system.autoUpgrade = {
+    enable = true;
+    flake = "/home/muratha/nixos-config";
+    flags = [
+      "--update-input"
+      "nixpkgs"
+      "--commit-lock-file"
+    ];
+    dates = "09:00";
+    randomizedDelaySec = "45min";
+  };
 }

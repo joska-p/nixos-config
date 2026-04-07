@@ -31,6 +31,7 @@ in
     p7zip
     aria2
     zenity
+    libnotify # For notify-send
 
     # System monitoring & hardware tools
     nvtopPackages.full # GPU monitor

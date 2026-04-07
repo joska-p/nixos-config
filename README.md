@@ -48,6 +48,7 @@ Static files used by the configuration.
 *   **Compatibility**: `nix-ld` enabled to run unpatched binaries (perfect for VS Code/Zed LSPs).
 *   **Maintenance**: Automated weekly garbage collection and nix-store optimization.
 *   **Gaming**: Steam, GameMode, and Wine compatibility tools pre-installed.
+*   **Automated Updates**: Daily background updates of `nixpkgs` (9 AM with randomized delay) and weekly garbage collection to keep the system clean and secure.
 
 ---
 
@@ -62,6 +63,15 @@ This configuration requires your machine-specific hardware scan. If setting up o
 ### 2. User Personalization
 - **Hostname**: Set in `modules/system/system.nix`.
 - **Username**: Update in `modules/system/users.nix` and `modules/home/default.nix`.
+
+---
+
+## 🧹 Maintenance
+
+The system is configured for automated self-maintenance:
+*   **Auto-Upgrades**: `nixpkgs` is updated daily at 9:00 AM (randomized delay up to 45m).
+*   **Garbage Collection**: Weekly cleaning of older system generations.
+*   **Nix Optimization**: Periodic store optimization to save disk space.
 
 ---
 
