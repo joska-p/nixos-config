@@ -1,4 +1,16 @@
 { pkgs, ... }:
+let
+  # Define the custom background package with the correct relative path
+  background-package = pkgs.stdenvNoCC.mkDerivation {
+    name = "background-image";
+    src = ./wallpaper.jpg; # Place wallpaper.jpg in the same directory as this config file
+    dontUnpack = true;
+    installPhase = ''
+      cp $src $out
+    '';
+  };
+
+in
 {
   # System-wide package configuration
   nixpkgs.config.allowUnfree = true;
@@ -110,6 +122,7 @@
     kdePackages.kolourpaint # Simple paint program
     kdePackages.ksystemlog # System log viewer
     kdiff3 # File/directory comparison tool
+    kdePackages.sddm-kcm # SDDM theme configuration
 
     # Hardware/System Utilities (Optional)
     kdePackages.isoimagewriter # Write hybrid ISOs to USB
@@ -117,5 +130,11 @@
     hardinfo2 # System benchmarks and hardware info
     wayland-utils # Wayland diagnostic tools
     wl-clipboard # Wayland copy/paste support
+
+    # SDDM theme configuration
+    (pkgs.writeTextDir "share/sddm/themes/breeze/theme.conf.user" ''
+      [General]
+      background = "${background-package}"
+    '')
   ];
 }
