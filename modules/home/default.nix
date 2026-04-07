@@ -22,6 +22,8 @@
     gcc # GNU Compiler Collection
     nodejs # JavaScript runtime environment
     nixfmt-rfc-style # Nix code formatter
+    direnv # Shell extension that manages your environment
+    nix-direnv # Faster, nix-integrated direnv
 
     # --- Multimedia & Audio ---
     vlc # Universal media player

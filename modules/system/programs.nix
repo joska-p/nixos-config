@@ -33,6 +33,9 @@ in
     zenity # GUI dialog boxes from shell
     libnotify # System notifications (notify-send)
 
+    # Web browsers
+    google-chrome
+
     # System monitoring & hardware tools
     nvtopPackages.full # GPU status viewer
     mesa-demos # OpenGL/graphics diagnostic tools
