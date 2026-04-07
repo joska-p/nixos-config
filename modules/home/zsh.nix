@@ -18,8 +18,8 @@
       z = "zed";
 
       # --- NixOS Management ---
-      rebuild = "sudo nixos-rebuild switch --flake .#nixos-laptop";
-      update = "sudo nixos-rebuild switch --upgrade --flake .#nixos-laptop";
+      rebuild = "sudo nixos-rebuild switch --flake .";
+      update = "sudo nixos-rebuild switch --upgrade --flake .";
       nix-clean = "sudo nix-collect-garbage -d"; # Deep clean old generations
       nix-list = "nix-env --list-generations --profile /nix/var/nix/profiles/system";
 
