@@ -10,8 +10,32 @@
     enable = true;
     package = pkgs-unstable.zed-editor;
 
+    extensions = [
+      "nix"
+      "toml"
+    ];
+
     # Everything inside of these brackets are Zed options
     userSettings = {
+      agent = {
+        default_model = {
+          provider = "copilot_chat";
+          model = "gpt-5-mini";
+          enable_thinking = false;
+          effort = "high";
+        };
+        favorite_models = [ ];
+        model_parameters = [ ];
+      };
+      agent_servers = {
+        github-copilot-cli = {
+          type = "registry";
+        };
+        gemini = {
+          type = "registry";
+        };
+      };
+
       node = {
         path = lib.getExe pkgs.nodejs;
         npm_path = lib.getExe' pkgs.nodejs "npm";
