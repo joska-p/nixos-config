@@ -40,7 +40,6 @@
     kdePackages.kolourpaint # Simple paint program
     kdePackages.ksystemlog # System log viewer
     kdiff3 # File/directory comparison tool
-    kdePackages.sddm-kcm # SDDM theme configuration
 
     # Hardware/System Utilities
     kdePackages.isoimagewriter # USB ISO writer
