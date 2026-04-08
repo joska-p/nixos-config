@@ -10,18 +10,6 @@
     enable = true;
     # Everything inside of these brackets are Zed options
     userSettings = {
-      agent_servers = {
-        "Gemini CLI Custom" = {
-          type = "custom";
-          command = "node";
-          args = [
-            "/home/${vars.username}/.local/share/zed/external_agents/gemini/0.36.0/node_modules/@google/gemini-cli/bundle/gemini.js"
-            "--acp"
-          ];
-          env = { };
-        };
-      };
-
       node = {
         path = lib.getExe pkgs.nodejs;
         npm_path = lib.getExe' pkgs.nodejs "npm";
