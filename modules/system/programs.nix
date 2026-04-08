@@ -1,16 +1,5 @@
 { pkgs, ... }:
-let
-  # Define the custom background package with the correct relative path
-  background-package = pkgs.stdenvNoCC.mkDerivation {
-    name = "background-image";
-    src = ../../assets/wallpaper.jpg; # Place wallpaper.jpg in the same directory as this config file
-    dontUnpack = true;
-    installPhase = ''
-      cp $src $out
-    '';
-  };
 
-in
 {
   # System-wide package configuration
   nixpkgs.config.allowUnfree = true;
@@ -59,11 +48,5 @@ in
     hardinfo2 # System benchmarks and hardware info
     wayland-utils # Wayland diagnostic tools
     wl-clipboard # Wayland copy/paste support
-
-    # SDDM theme configuration
-    (pkgs.writeTextDir "share/sddm/themes/breeze/theme.conf.user" ''
-      [General]
-      background = "${background-package}"
-    '')
   ];
 }
