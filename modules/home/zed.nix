@@ -1,13 +1,15 @@
 {
   pkgs,
   lib,
-  vars,
+  pkgs-unstable,
   ...
 }:
 
 {
   programs.zed-editor = {
     enable = true;
+    package = pkgs-unstable.zed-editor;
+
     # Everything inside of these brackets are Zed options
     userSettings = {
       node = {

@@ -15,7 +15,6 @@
   home.packages = with pkgs; [
     # --- Text Editors & IDEs ---
     nixd # Language server for Nix
-    zed-editor # High-performance code editor
 
     # --- Development & Build Tools ---
     cmake # Build system for C/C++
