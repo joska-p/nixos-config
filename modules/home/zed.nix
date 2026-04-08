@@ -41,7 +41,6 @@
         npm_path = lib.getExe' pkgs.nodejs "npm";
       };
 
-      hour_format = "hour24";
       auto_update = false;
 
       terminal = {
