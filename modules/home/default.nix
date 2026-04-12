@@ -19,7 +19,6 @@
     # --- Development & Build Tools ---
     cmake # Build system for C/C++
     gcc # GNU Compiler Collection
-    nodejs # JavaScript runtime environment
     nixfmt # Nix code formatter
     direnv # Shell extension that manages your environment
     nix-direnv # Faster, nix-integrated direnv
