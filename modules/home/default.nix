@@ -27,6 +27,7 @@
     vlc # Universal media player
     easyeffects # Audio effects for PipeWire (Equalizer, etc.)
     yt-dlp # Downloader for YouTube and other video platforms
+    ffmpeg # Complete, cross-platform solution to record, convert and stream audio and video
 
     # --- Utilities ---
     bat # Better cat command with syntax highlighting
