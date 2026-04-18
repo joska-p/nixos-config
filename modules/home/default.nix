@@ -26,6 +26,7 @@
     # --- Multimedia & Audio ---
     vlc # Universal media player
     easyeffects # Audio effects for PipeWire (Equalizer, etc.)
+    yt-dlp # Downloader for YouTube and other video platforms
 
     # --- Utilities ---
     bat # Better cat command with syntax highlighting
