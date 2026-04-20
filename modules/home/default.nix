@@ -28,6 +28,7 @@
     easyeffects # Audio effects for PipeWire (Equalizer, etc.)
     yt-dlp # Downloader for YouTube and other video platforms
     ffmpeg # Complete, cross-platform solution to record, convert and stream audio and video
+    gimp # GNU Image Manipulation Program
 
     # --- Utilities ---
     bat # Better cat command with syntax highlighting

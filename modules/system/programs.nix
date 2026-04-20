@@ -4,6 +4,8 @@
   # System-wide package configuration
   nixpkgs.config.allowUnfree = true;
 
+  services.flatpak.enable = true;
+
   # --- System-level Programs ---
   # These are programs that need special integration with the OS
 
