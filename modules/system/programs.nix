@@ -9,7 +9,11 @@
   # --- System-level Programs ---
   # These are programs that need special integration with the OS
 
-  programs.vscode.enable = true; # VS Code often needs system-level help for auth/keyring
+  # VS Code often needs system-level help for auth/keyring
+  programs.vscode = {
+    enable = true;
+    package = pkgs.vscode.fhs;
+  };
 
   # Zsh must be enabled at the system level to be a valid login shell
   programs.zsh.enable = true;

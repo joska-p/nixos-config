@@ -22,6 +22,7 @@
     nixfmt # Nix code formatter
     direnv # Shell extension that manages your environment
     nix-direnv # Faster, nix-integrated direnv
+    jq # JSON query tool
 
     # --- Multimedia & Audio ---
     vlc # Universal media player
