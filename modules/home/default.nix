@@ -15,7 +15,6 @@
   home.packages = with pkgs; [
     # --- Text Editors & IDEs ---
     nixd # Language server for Nix
-    opencode # Open source code editor based on Visual Studio Code
 
     # --- Development & Build Tools ---
     cmake # Build system for C/C++
