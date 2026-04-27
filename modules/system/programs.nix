@@ -27,6 +27,7 @@
     aria2 # Multi-protocol download utility
     zenity # GUI dialog boxes from shell
     libnotify # System notifications (notify-send)
+    vscode.fhs # VSCode FHS wrapper
 
     # Web browsers
     google-chrome
