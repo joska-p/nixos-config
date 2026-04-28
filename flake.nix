@@ -22,6 +22,13 @@
     let
       system = "x86_64-linux";
 
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
+
+      cursor-pkg = pkgs.callPackage ./pkgs/cursor/default.nix { };
+
       vars = rec {
         username = "muratha";
         hostname = "nixos-laptop";
@@ -38,12 +45,12 @@
     in
     {
       nixosConfigurations.${vars.hostname} = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs vars pkgs-unstable; };
+        specialArgs = { inherit inputs vars pkgs-unstable cursor-pkg; };
         modules = [
           ./hosts/laptop/configuration.nix
           home-manager.nixosModules.home-manager
           {
-            home-manager.extraSpecialArgs = { inherit inputs vars pkgs-unstable; };
+            home-manager.extraSpecialArgs = { inherit inputs vars pkgs-unstable cursor-pkg; };
           }
 
         ];

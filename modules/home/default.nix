@@ -1,4 +1,4 @@
-{ pkgs, vars, ... }:
+{ pkgs, vars, inputs, pkgs-unstable, cursor-pkg, ... }:
 {
   imports = [
     ./git.nix
@@ -14,7 +14,12 @@
 
   home.packages = with pkgs; [
     # --- Text Editors & IDEs ---
+    cursor-pkg # Custom cursor buil from the local pkgs directory
+
+    # --- Text Editors & IDEs ---
     nixd # Language server for Nix
+    nodejs # Required for many JavaScript-based tools
+    corepack # Manages npm/pnpm/yarn versions as specified in package.json
 
     # --- Development & Build Tools ---
     cmake # Build system for C/C++
