@@ -1,14 +1,16 @@
 {
   pkgs,
   lib,
-  pkgs-unstable,
+  vars,
+  inputs,
   ...
 }:
 
 {
   programs.zed-editor = {
     enable = true;
-    package = pkgs-unstable.zed-editor;
+    # Use the official stable package from the Zed flake input
+    package = inputs.zed-editor.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
     extensions = [
       "nix"
@@ -17,30 +19,12 @@
 
     # Everything inside of these brackets are Zed options
     userSettings = {
-      agent = {
-        default_model = {
-          provider = "copilot_chat";
-          model = "gpt-5-mini";
-          enable_thinking = false;
-          effort = "high";
-        };
-        favorite_models = [ ];
-        model_parameters = [ ];
-      };
-      agent_servers = {
-        github-copilot-cli = {
-          type = "registry";
-        };
-        gemini = {
-          type = "registry";
-        };
-      };
-
       node = {
         path = lib.getExe pkgs.nodejs;
         npm_path = lib.getExe' pkgs.nodejs "npm";
       };
 
+      hour_format = "hour24";
       auto_update = false;
 
       terminal = {
@@ -61,7 +45,6 @@
       # Tell Zed to use direnv and direnv can use a flake.nix environment
       load_direnv = "shell_hook";
       base_keymap = "VSCode";
-
       theme = "Gruvbox Dark";
       ui_font_size = 16;
       buffer_font_size = 16;
