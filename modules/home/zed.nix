@@ -2,15 +2,14 @@
   pkgs,
   lib,
   vars,
-  inputs,
+  pkgs-unstable,
   ...
 }:
 
 {
   programs.zed-editor = {
     enable = true;
-    # Use the official stable package from the Zed flake input
-    package = inputs.zed-editor.packages.${pkgs.stdenv.hostPlatform.system}.default;
+    package = pkgs-unstable.zed-editor;
 
     extensions = [
       "nix"
