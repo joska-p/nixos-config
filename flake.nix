@@ -343,6 +343,7 @@
                   wine # Couche de compatibilité Windows
                   winetricks # Script d'aide pour Wine/Proton
                   protonplus # Gestion des versions de Proton
+                  discord # Client Discord
                 ];
 
                 programs.home-manager.enable = true;
