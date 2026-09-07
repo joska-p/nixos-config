@@ -48,7 +48,7 @@
             { pkgs, lib, vars, ... }:
             {
               imports = [
-               " ~/nixos-config/hardware-configuration.nix"
+               "./hardware-configuration.nix"
               ];
 
               boot.loader.systemd-boot.enable = true;
