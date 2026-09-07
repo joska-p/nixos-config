@@ -13,7 +13,6 @@
 
   outputs =
     {
-      self,
       nixpkgs,
       nixpkgs-unstable,
       home-manager,
@@ -21,11 +20,6 @@
     }@inputs:
     let
       system = "x86_64-linux";
-
-      pkgs = import nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-      };
 
       vars = rec {
         username = "muratha";
@@ -315,7 +309,7 @@
             home-manager.extraSpecialArgs = { inherit inputs vars pkgs-unstable; };
 
             home-manager.users.${vars.username} =
-              { pkgs, vars, inputs, pkgs-unstable, lib, ... }:
+              { pkgs, vars, pkgs-unstable, lib, ... }:
               {
                 home.username = vars.username;
                 home.homeDirectory = "/home/${vars.username}";
