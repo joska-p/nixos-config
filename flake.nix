@@ -384,8 +384,10 @@
                 xdg.desktopEntries = {
                   "org.kde.ksystemlog" = {
                     name = "KSystemLog";
+                    genericName = "System Log Viewer";
+                    comment = "System log viewer tool";
                     exec = "ksystemlog";
-                    icon = "org.kde.ksystemlog";
+                    icon = "utilities-log-viewer";
                     settings = {
                       X-KDE-SubstituteUID = "false";
                     };
