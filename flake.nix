@@ -378,6 +378,7 @@
                   winetricks # Script d'aide pour Wine/Proton
                   protonplus # Gestion des versions de Proton
                   discord # Client Discord
+                  heroic # Client GOG
                 ];
 
                 # --- Correction du lanceur KSystemLog ---
