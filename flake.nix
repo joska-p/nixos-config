@@ -424,18 +424,21 @@
 
                 programs.ssh = {
                   enable = true;
-                  addKeysToAgent = "yes";
-                  matchBlocks = {
-                    "github.com" = {
-                      # Adapte le nom au fichier réel de ta clé dans ~/.ssh
-                      identityFile = "~/.ssh/id_ed25519";
+
+                  # 1. Désactive l'ancienne configuration par défaut obsolète
+                  enableDefaultConfig = false;
+
+                  # 2. Nouvelle structure générique "settings"
+                  settings = {
+                    # On remplace l'ancien "addKeysToAgent" global par le bloc par défaut "*"
+                    "*" = {
+                      AddKeysToAgent = "yes";
                     };
-                    # Ajoute d'autres hôtes ici si besoin, ex:
-                    # "monserveur" = {
-                    #   hostname = "192.168.1.10";
-                    #   user = vars.username;
-                    #   identityFile = "~/.ssh/id_ed25519";
-                    # };
+
+                    # On remplace "matchBlocks" par des déclarations directes de blocs
+                    "github.com" = {
+                      IdentityFile = "~/.ssh/id_ed25519";
+                    };
                   };
                 };
 
