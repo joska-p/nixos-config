@@ -126,13 +126,6 @@
                 };
               };
 
-              services.udev.extraRules = ''
-                # Razer DeathAdder V3 - Disable USB Autosuspend
-                ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="1532", ATTR{idProduct}=="00b2", ATTR{power/control}="on"
-                # Xbox One Controller - Disable USB Autosuspend
-                ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="045e", ATTR{idProduct}=="02ea", ATTR{power/control}="on"
-              '';
-
               hardware.enableRedistributableFirmware = lib.mkDefault true;
               hardware.graphics = {
                 enable = true;
@@ -143,8 +136,6 @@
                 # GTX 1050 Ti = architecture Pascal : les branches "stable"/"production"/
                 # "beta" ne supportent plus Pascal/Maxwell depuis les drivers 590+.
                 # Il faut rester sur la dernière branche legacy qui les supporte encore.
-                # Vérifie sur search.nixos.org/options?query=hardware.nvidia.branch
-                # que "legacy_580" est bien dans les valeurs acceptées avant d'installer.
                 branch = "legacy_580";
                 modesetting.enable = true; # Required for NVIDIA PRIME
                 powerManagement.enable = true; # Meilleure autonomie / veille sur portable
@@ -223,6 +214,7 @@
                 pciutils # PCI device listing (lspci)
 
                 # KDE Utilities
+                kdePackages.kate # Text editor
                 kdePackages.discover # Software center
                 kdePackages.kcalc # Scientific calculator
                 kdePackages.kcharselect # Character map
