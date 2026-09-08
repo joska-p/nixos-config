@@ -202,17 +202,6 @@
               };
               services.desktopManager.plasma6.enable = true;
 
-              xdg.desktopEntries = {
-                "org.kde.ksystemlog" = {
-                  name = "KSystemLog";
-                  exec = "ksystemlog";
-                  icon = "ksystemlog";
-                  settings = {
-                    X-KDE-SubstituteUID = "false";
-                  };
-                };
-              };
-
               environment.plasma6.excludePackages = with pkgs; [
                 kdePackages.elisa
               ];
@@ -390,6 +379,18 @@
                   protonplus # Gestion des versions de Proton
                   discord # Client Discord
                 ];
+
+                # --- Correction du lanceur KSystemLog ---
+                xdg.desktopEntries = {
+                  "org.kde.ksystemlog" = {
+                    name = "KSystemLog";
+                    exec = "ksystemlog";
+                    icon = "ksystemlog";
+                    settings = {
+                      X-KDE-SubstituteUID = "false";
+                    };
+                  };
+                };
 
                 programs.home-manager.enable = true;
 
