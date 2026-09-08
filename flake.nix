@@ -385,7 +385,7 @@
                   "org.kde.ksystemlog" = {
                     name = "KSystemLog";
                     exec = "ksystemlog";
-                    icon = "ksystemlog";
+                    icon = "org.kde.ksystemlog";
                     settings = {
                       X-KDE-SubstituteUID = "false";
                     };
