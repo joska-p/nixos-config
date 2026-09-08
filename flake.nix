@@ -21,6 +21,9 @@
     let
       system = "x86_64-linux";
 
+      # ==========================================================
+      # VARIABLES GLOBALES
+      # ==========================================================
       vars = rec {
         username = "muratha";
         hostname = "nixos-laptop";
@@ -39,98 +42,88 @@
         specialArgs = { inherit inputs vars pkgs-unstable; };
         modules = [
           (
-            { pkgs, lib, vars, ... }:
+            {
+              pkgs,
+              lib,
+              vars,
+              ...
+            }:
             {
               imports = [
-               ./hardware-configuration.nix
+                ./hardware-configuration.nix
               ];
-
-              boot.loader.systemd-boot.enable = true;
-              boot.loader.efi.canTouchEfiVariables = true;
 
               # State version for tracking stateful data. Do not change.
               system.stateVersion = "26.05";
 
-              # --- Graphics & X11 ---
-              services.xserver = {
-                enable = true;
-                videoDrivers = [
-                  "modesetting"
-                  "nvidia"
-                ];
-                xkb = {
-                  layout = "fr";
-                  variant = "";
-                };
-              };
+              # ==========================================================
+              # BOOT
+              # ==========================================================
+              boot.loader.systemd-boot.enable = true;
+              boot.loader.efi.canTouchEfiVariables = true;
 
-              # --- Desktop Environment (KDE Plasma 6) ---
-              services.displayManager.sddm = {
-                enable = true;
-                wayland.enable = true;
+              # ==========================================================
+              # LOCALISATION
+              # ==========================================================
+              time.timeZone = "Europe/Paris";
+              i18n.defaultLocale = "en_US.UTF-8";
+              i18n.extraLocaleSettings = {
+                LC_ADDRESS = "fr_FR.UTF-8";
+                LC_IDENTIFICATION = "fr_FR.UTF-8";
+                LC_MEASUREMENT = "fr_FR.UTF-8";
+                LC_MONETARY = "fr_FR.UTF-8";
+                LC_NAME = "fr_FR.UTF-8";
+                LC_NUMERIC = "fr_FR.UTF-8";
+                LC_PAPER = "fr_FR.UTF-8";
+                LC_TELEPHONE = "fr_FR.UTF-8";
+                LC_TIME = "fr_FR.UTF-8";
               };
-              services.desktopManager.plasma6.enable = true;
-              environment.plasma6.excludePackages = with pkgs; [
-                kdePackages.elisa
-                kdePackages.kate
+              console.keyMap = "fr";
+
+              # ==========================================================
+              # RESEAU
+              # ==========================================================
+              networking.hostName = vars.hostname;
+              networking.networkmanager.enable = true;
+
+              # ==========================================================
+              # NIX : options, garbage collection, mises à jour auto
+              # ==========================================================
+              nix.settings.experimental-features = [
+                "nix-command"
+                "flakes"
               ];
-
-              # Enable sound with pipewire.
-              services.pulseaudio.enable = false;
-              security.rtkit.enable = true;
-              services.pipewire = {
-                enable = true;
-                alsa.enable = true;
-                alsa.support32Bit = true;
-                pulse.enable = true;
-                # If you want to use JACK applications, uncomment this
-                #jack.enable = true;
-
-                # Use the WirePlumber session manager
-                #wireplumber.enable = true;
+              nix.optimise.automatic = true;
+              nix.gc = {
+                automatic = true;
+                dates = [ "weekly" ];
+                options = "--delete-older-than 30d";
               };
 
-              programs.firefox = {
+              system.autoUpgrade = {
                 enable = true;
-                languagePacks = [
-                  "en-US"
-                  "fr"
+                flake = vars.configDir;
+                flags = [
+                  "--update-input"
+                  "nixpkgs"
+                  "--commit-lock-file"
                 ];
+                dates = "09:00";
+                randomizedDelaySec = "45min";
               };
 
-              fonts.packages = with pkgs; [
-                nerd-fonts.jetbrains-mono # Developer font with many icons
-                noto-fonts # Standard Google fonts for all languages
-                noto-fonts-cjk-sans # CJK character support
-                noto-fonts-color-emoji # Color emoji support
-                liberation_ttf # Open-source versions of standard fonts
-                fira-code # Popular coding font with ligatures
-                fira-code-symbols # Extra symbols for Fira Code
-                mplus-outline-fonts.githubRelease # Versatile Japanese font
-                dina-font # Crisp bitmapped coding font
-                proggyfonts # Small coding fonts
-                vista-fonts # Microsoft fonts from the Vista era
-                corefonts # Microsoft core web fonts (Arial, etc.)
-              ];
+              # System-wide package configuration
+              nixpkgs.config.allowUnfree = true;
 
-              programs.steam = {
-                enable = true;
-                protontricks.enable = true; # Tool to install dependencies in Steam games
-              };
-
-              programs.gamemode = {
-                enable = true;
-                settings = {
-                  general.renice = 10; # Lower process priority for better performance
-                  gpu.gpu_device = 1; # Target specific GPU for GameMode
-                };
-              };
-
+              # ==========================================================
+              # MATERIEL : GPU, firmware, bluetooth, audio
+              # ==========================================================
               hardware.enableRedistributableFirmware = lib.mkDefault true;
               hardware.graphics = {
                 enable = true;
                 enable32Bit = true;
               };
+
               hardware.nvidia = {
                 open = false;
                 # GTX 1050 Ti = architecture Pascal : les branches "stable"/"production"/
@@ -150,6 +143,7 @@
                   nvidiaBusId = "PCI:1@0:0:0";
                 };
               };
+
               hardware.bluetooth = {
                 enable = true;
                 powerOnBoot = true;
@@ -164,6 +158,90 @@
                 };
               };
 
+              # Gestion d'énergie (laptop) : profils Performance/Équilibré/
+              # Économie accessibles depuis l'applet batterie de Plasma.
+              # Ne PAS activer TLP en même temps (les deux se marchent dessus).
+              services.power-profiles-daemon.enable = true;
+              # Thermald : gère le throttling thermique côté CPU Intel
+              # (pertinent ici vu le GPU Intel intégré en offload avec la Nvidia).
+              services.thermald.enable = true;
+
+              # Sound via pipewire (remplace pulseaudio)
+              services.pulseaudio.enable = false;
+              security.rtkit.enable = true;
+              services.pipewire = {
+                enable = true;
+                alsa.enable = true;
+                alsa.support32Bit = true;
+                pulse.enable = true;
+                # If you want to use JACK applications, uncomment this
+                #jack.enable = true;
+
+                # Use the WirePlumber session manager
+                #wireplumber.enable = true;
+              };
+
+              # ==========================================================
+              # ENVIRONNEMENT GRAPHIQUE : X11, SDDM, Plasma 6, polices
+              # ==========================================================
+              services.xserver = {
+                enable = true;
+                videoDrivers = [
+                  "modesetting"
+                  "nvidia"
+                ];
+                xkb = {
+                  layout = "fr";
+                  variant = "";
+                };
+              };
+
+              services.displayManager.sddm = {
+                enable = true;
+                wayland.enable = true;
+              };
+              services.desktopManager.plasma6.enable = true;
+
+              environment.plasma6.excludePackages = with pkgs; [
+                kdePackages.elisa
+              ];
+
+              fonts.packages = with pkgs; [
+                nerd-fonts.jetbrains-mono # Developer font with many icons
+                noto-fonts # Standard Google fonts for all languages
+                noto-fonts-cjk-sans # CJK character support
+                noto-fonts-color-emoji # Color emoji support
+                liberation_ttf # Open-source versions of standard fonts
+                fira-code # Popular coding font with ligatures
+                fira-code-symbols # Extra symbols for Fira Code
+                mplus-outline-fonts.githubRelease # Versatile Japanese font
+                vista-fonts # Microsoft fonts from the Vista era
+                corefonts # Microsoft core web fonts (Arial, etc.)
+              ];
+
+              services.flatpak.enable = true;
+
+              # ==========================================================
+              # PROGRAMMES SYSTEME (nécessitent une intégration OS)
+              # ==========================================================
+              programs.firefox = {
+                enable = true;
+                languagePacks = [
+                  "en-US"
+                  "fr"
+                ];
+              };
+
+              # VS Code souvent gardé "sous la main" en complément de Zed
+              # (nécessite le wrapper FHS pour l'auth/le keyring)
+              programs.vscode = {
+                enable = true;
+                package = pkgs.vscode.fhs;
+              };
+
+              # Zsh must be enabled at the system level to be a valid login shell
+              programs.zsh.enable = true;
+
               # Enable nix-ld to run unpatched binaries (like Zed language servers)
               programs.nix-ld.enable = true;
               programs.nix-ld.libraries = with pkgs; [
@@ -177,44 +255,46 @@
                 expat
               ];
 
-              # System-wide package configuration
-              nixpkgs.config.allowUnfree = true;
-
-              services.flatpak.enable = true;
-
-              # --- System-level Programs ---
-              # These are programs that need special integration with the OS
-
-              # VS Code often needs system-level help for auth/keyring
-              programs.vscode = {
+              # --- Gaming ---
+              programs.steam = {
                 enable = true;
-                package = pkgs.vscode.fhs;
+                protontricks.enable = true; # Tool to install dependencies in Steam games
               };
 
-              # Zsh must be enabled at the system level to be a valid login shell
-              programs.zsh.enable = true;
+              programs.gamemode = {
+                enable = true;
+                settings = {
+                  general.renice = 10; # Lower process priority for better performance
+                  gpu.gpu_device = 1; # Target specific GPU for GameMode
+                };
+              };
 
-              # --- System-wide Packages ---
+              # ==========================================================
+              # PAQUETS SYSTEME (environment.systemPackages)
+              # ==========================================================
               environment.systemPackages = with pkgs; [
-                # Core utilities
-                vim # Terminal text editor
+                # --- Utilitaires de base ---
+                vim # Éditeur minimal, utile en secours (TTY/SSH sans DE)
                 p7zip # File archiver for .7z
-                aria2 # Multi-protocol download utility
+                aria2 # Multi-protocol download utility (CLI)
                 zenity # GUI dialog boxes from shell
                 libnotify # System notifications (notify-send)
 
-                # Web browsers
+                # --- Navigateurs ---
                 google-chrome
 
-                # System monitoring & hardware tools
+                # --- Diagnostic système & matériel ---
                 nvtopPackages.full # GPU status viewer
                 mesa-demos # OpenGL/graphics diagnostic tools
                 vulkan-tools # Vulkan diagnostic tools
                 usbutils # USB device listing (lsusb)
                 pciutils # PCI device listing (lspci)
+                hardinfo2 # System benchmarks and hardware info
+                wayland-utils # Wayland diagnostic tools
+                wl-clipboard # Wayland copy/paste support
 
-                # KDE Utilities
-                kdePackages.kate # Text editor
+                # --- Utilitaires KDE ---
+                kdePackages.kate # Éditeur générique (hors dev)
                 kdePackages.discover # Software center
                 kdePackages.kcalc # Scientific calculator
                 kdePackages.kcharselect # Character map
@@ -222,61 +302,13 @@
                 kdePackages.kolourpaint # Simple paint program
                 kdePackages.ksystemlog # System log viewer
                 kdiff3 # File/directory comparison tool
-
-                # Hardware/System Utilities
                 kdePackages.isoimagewriter # USB ISO writer
                 kdePackages.partitionmanager # Disk partition management
-                hardinfo2 # System benchmarks and hardware info
-                wayland-utils # Wayland diagnostic tools
-                wl-clipboard # Wayland copy/paste support
               ];
 
-              # --- Networking ---
-              networking.hostName = vars.hostname;
-              networking.networkmanager.enable = true;
-
-              # --- Localization ---
-              time.timeZone = "Europe/Paris";
-              i18n.defaultLocale = "en_US.UTF-8";
-              i18n.extraLocaleSettings = {
-                LC_ADDRESS = "fr_FR.UTF-8";
-                LC_IDENTIFICATION = "fr_FR.UTF-8";
-                LC_MEASUREMENT = "fr_FR.UTF-8";
-                LC_MONETARY = "fr_FR.UTF-8";
-                LC_NAME = "fr_FR.UTF-8";
-                LC_NUMERIC = "fr_FR.UTF-8";
-                LC_PAPER = "fr_FR.UTF-8";
-                LC_TELEPHONE = "fr_FR.UTF-8";
-                LC_TIME = "fr_FR.UTF-8";
-              };
-              console.keyMap = "fr";
-
-              # --- Nix Settings & Optimization ---
-              nix.settings.experimental-features = [
-                "nix-command"
-                "flakes"
-              ];
-              nix.optimise.automatic = true;
-              nix.gc = {
-                automatic = true;
-                dates = [ "weekly" ];
-                options = "--delete-older-than 30d";
-              };
-
-              # --- Auto-Upgrades ---
-              system.autoUpgrade = {
-                enable = true;
-                flake = vars.configDir;
-                flags = [
-                  "--update-input"
-                  "nixpkgs"
-                  "--commit-lock-file"
-                ];
-                dates = "09:00";
-                randomizedDelaySec = "45min";
-              };
-
-              # Main user account
+              # ==========================================================
+              # COMPTE UTILISATEUR
+              # ==========================================================
               users.users.${vars.username} = {
                 isNormalUser = true;
                 description = vars.username;
@@ -301,7 +333,13 @@
             home-manager.extraSpecialArgs = { inherit inputs vars pkgs-unstable; };
 
             home-manager.users.${vars.username} =
-              { pkgs, vars, pkgs-unstable, lib, ... }:
+              {
+                pkgs,
+                vars,
+                pkgs-unstable,
+                lib,
+                ...
+              }:
               {
                 home.username = vars.username;
                 home.homeDirectory = "/home/${vars.username}";
@@ -309,6 +347,9 @@
                 # State version for tracking stateful data. Do not change.
                 home.stateVersion = "26.05";
 
+                # ========================================================
+                # PAQUETS UTILISATEUR (home.packages)
+                # ========================================================
                 home.packages = with pkgs; [
                   # --- Editeurs & langages ---
                   nixd # Language server pour Nix (utilisé par Zed)
@@ -320,6 +361,7 @@
                   nix-direnv # Cache direnv accéléré pour Nix
                   jq # Traitement JSON en ligne de commande
                   bat # cat avec coloration syntaxique
+                  eza # ls moderne (couleurs, icônes, infos git) — utilisé par les alias ll/la
 
                   # --- Multimédia ---
                   vlc # Lecteur média universel
@@ -329,7 +371,7 @@
                   gimp # Retouche d'image
 
                   # --- Utilitaires ---
-                  uget # Gestionnaire de téléchargements
+                  uget # Gestionnaire de téléchargements (GUI)
 
                   # --- Gaming & compatibilité Windows ---
                   wine # Couche de compatibilité Windows
@@ -340,6 +382,9 @@
 
                 programs.home-manager.enable = true;
 
+                # ========================================================
+                # GIT
+                # ========================================================
                 programs.git = {
                   enable = true;
                   settings = {
@@ -352,6 +397,39 @@
                   };
                 };
 
+                # ========================================================
+                # SSH & GPG
+                # ========================================================
+                programs.gpg.enable = true;
+
+                services.gpg-agent = {
+                  enable = true;
+                  enableSshSupport = true; # gpg-agent sert aussi d'agent SSH (plus besoin de ssh-agent séparé)
+                  pinentry.package = pkgs.pinentry-qt; # boîte de dialogue Qt/KDE pour saisir le mot de passe
+                  defaultCacheTtl = 3600; # 1h avant de redemander le mot de passe
+                  maxCacheTtl = 86400; # 24h max
+                };
+
+                programs.ssh = {
+                  enable = true;
+                  addKeysToAgent = "yes";
+                  matchBlocks = {
+                    "github.com" = {
+                      # Adapte le nom au fichier réel de ta clé dans ~/.ssh
+                      identityFile = "~/.ssh/id_ed25519";
+                    };
+                    # Ajoute d'autres hôtes ici si besoin, ex:
+                    # "monserveur" = {
+                    #   hostname = "192.168.1.10";
+                    #   user = vars.username;
+                    #   identityFile = "~/.ssh/id_ed25519";
+                    # };
+                  };
+                };
+
+                # ========================================================
+                # EDITEUR PRINCIPAL : Zed
+                # ========================================================
                 programs.zed-editor = {
                   enable = true;
                   package = pkgs-unstable.zed-editor;
@@ -361,7 +439,6 @@
                     "toml"
                   ];
 
-                  # Everything inside of these brackets are Zed options
                   userSettings = {
                     node = {
                       path = lib.getExe pkgs.nodejs;
@@ -395,6 +472,9 @@
                   };
                 };
 
+                # ========================================================
+                # SHELL : Zsh + oh-my-zsh + alias
+                # ========================================================
                 programs.zsh = {
                   enable = true;
                   enableCompletion = true;
@@ -403,13 +483,11 @@
 
                   shellAliases = {
                     # --- General ---
-                    ll = "ls -l";
-                    la = "ls -lah";
+                    ll = "eza -l --icons --group-directories-first";
+                    la = "eza -la --icons --group-directories-first";
+                    lt = "eza --tree --icons"; # Arborescence
                     ".." = "cd ..";
                     "..." = "cd ../..";
-                    v = "vim";
-                    z = "zed";
-                    c = "code"; # VSCode
 
                     # --- NixOS Management ---
                     rebuild = "sudo nixos-rebuild switch --flake ~/nixos-config";
@@ -444,9 +522,31 @@
                   };
                 };
 
+                # direnv générique (les environnements de dev spécifiques
+                # sont gérés par ta flake de dev à part)
                 programs.direnv = {
                   enable = true;
                   nix-direnv.enable = true;
+                  enableZshIntegration = true;
+                };
+
+                # ========================================================
+                # NAVIGATION & RECHERCHE : zoxide + fzf
+                # ========================================================
+                # zoxide : "cd" intelligent qui apprend tes dossiers fréquents.
+                # vers Zed. Ex: après avoir fait `cd ~/nixos-config` une fois,
+                # `z nixos` te ramène dedans depuis n'importe où.
+                programs.zoxide = {
+                  enable = true;
+                  enableZshIntegration = true;
+                  options = [ "--cmd z" ];
+                };
+
+                # fzf : recherche floue interactive.
+                # Ctrl+R -> historique de commandes, Ctrl+T -> fichiers,
+                # Alt+C -> changer de dossier par recherche floue.
+                programs.fzf = {
+                  enable = true;
                   enableZshIntegration = true;
                 };
               };
