@@ -283,6 +283,8 @@
                 };
               };
 
+              programs.gamescope.enable = true;
+
               # ==========================================================
               # PAQUETS SYSTEME (environment.systemPackages)
               # ==========================================================
