@@ -279,6 +279,7 @@
                 aria2 # Multi-protocol download utility (CLI)
                 zenity # GUI dialog boxes from shell
                 libnotify # System notifications (notify-send)
+                aha # ANSI to HTML converter
 
                 # --- Navigateurs ---
                 google-chrome
