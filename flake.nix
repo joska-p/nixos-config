@@ -87,6 +87,20 @@
               networking.networkmanager.enable = true;
 
               # ==========================================================
+              # CONTENEURS : Podman (remplace Docker) + devcontainers
+              # ==========================================================
+              # Podman en mode "compat Docker" : expose un socket à
+              # /run/docker.sock et un alias `docker` -> podman. C'est ce
+              # que cherchent par défaut le CLI devcontainer, l'extension
+              # VS Code "Dev Containers", et la plupart des outils.
+              virtualisation.podman = {
+                enable = true;
+                dockerCompat = true; # crée la commande `docker` -> podman
+                dockerSocket.enable = true; # /run/docker.sock compatible
+                defaultNetwork.settings.dns_enabled = true; # DNS entre conteneurs (utile pour docker-compose)
+              };
+
+              # ==========================================================
               # NIX : options, garbage collection, mises à jour auto
               # ==========================================================
               nix.settings.experimental-features = [
@@ -318,6 +332,7 @@
                   "networkmanager"
                   "wheel"
                   "gamemode"
+                  "podman"
                 ];
               };
             }
@@ -363,6 +378,7 @@
                   jq # Traitement JSON en ligne de commande
                   bat # cat avec coloration syntaxique
                   eza # ls moderne (couleurs, icônes, infos git) — utilisé par les alias ll/la
+                  devcontainer # CLI officiel (containers.dev) : devcontainer up/exec/build
 
                   # --- Multimédia ---
                   vlc # Lecteur média universel
