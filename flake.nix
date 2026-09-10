@@ -280,10 +280,16 @@
                 settings = {
                   general.renice = 10; # Lower process priority for better performance
                   gpu.gpu_device = 1; # Target specific GPU for GameMode
-                  # exécuté au lancement du jeu : passe en mode performance
-                  start = "${pkgs.power-profiles-daemon}/bin/powerprofilesctl set performance";
-                  # exécuté à la fermeture du jeu : repasse en mode équilibré (balanced)
-                  end = "${pkgs.power-profiles-daemon}/bin/powerprofilesctl set balanced";
+                  custom = {
+                    start = "${pkgs.writeShellScript "gamemode-start" ''
+                      ${pkgs.power-profiles-daemon}/bin/powerprofilesctl set performance
+                      ${pkgs.libnotify}/bin/notify-send -a "GameMode" -i "applications-games" "GameMode Activé" "Profil d'énergie : Performance"
+                    ''}";
+                    end = "${pkgs.writeShellScript "gamemode-end" ''
+                      ${pkgs.power-profiles-daemon}/bin/powerprofilesctl set balanced
+                      ${pkgs.libnotify}/bin/notify-send -a "GameMode" -i "battery-profile-performance" "GameMode Désactivé" "Profil d'énergie : Équilibré"
+                    ''}";
+                  };
                 };
               };
 
