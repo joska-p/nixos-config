@@ -280,6 +280,10 @@
                 settings = {
                   general.renice = 10; # Lower process priority for better performance
                   gpu.gpu_device = 1; # Target specific GPU for GameMode
+                  # exécuté au lancement du jeu : passe en mode performance
+                  start = "${pkgs.power-profiles-daemon}/bin/powerprofilesctl set performance";
+                  # exécuté à la fermeture du jeu : repasse en mode équilibré (balanced)
+                  end = "${pkgs.power-profiles-daemon}/bin/powerprofilesctl set balanced";
                 };
               };
 
