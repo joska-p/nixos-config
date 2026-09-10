@@ -282,12 +282,18 @@
                   gpu.gpu_device = 1; # Target specific GPU for GameMode
                   custom = {
                     start = "${pkgs.writeShellScript "gamemode-start" ''
-                      ${pkgs.power-profiles-daemon}/bin/powerprofilesctl set performance
-                      ${pkgs.libnotify}/bin/notify-send -a "GameMode" -i "applications-games" "GameMode Activé" "Profil d'énergie : Performance"
+                      # 1. Commande D-Bus universelle pour basculer power-profiles-daemon en Performance
+                      ${pkgs.dbus}/bin/dbus-send --system --dest=net.hadess.PowerProfiles --type=method_call /net/hadess/PowerProfiles org.freedesktop.DBus.Properties.Set string:"net.hadess.PowerProfiles" string:"ActiveProfile" variant:string:"performance"
+
+                      # 2. Notification via KNotify (le système de notification natif de KDE Plasma)
+                      ${pkgs.dbus}/bin/dbus-send --session --dest=org.freedesktop.Notifications --type=method_call /org/freedesktop/Notifications org.freedesktop.Notifications.Notify string:"GameMode" uint32:0 string:"applications-games" string:"GameMode Activé" string:"Profil d'énergie : Performance" array:string:{} dict:string:string:{} int32:-1
                     ''}";
                     end = "${pkgs.writeShellScript "gamemode-end" ''
-                      ${pkgs.power-profiles-daemon}/bin/powerprofilesctl set balanced
-                      ${pkgs.libnotify}/bin/notify-send -a "GameMode" -i "battery-profile-performance" "GameMode Désactivé" "Profil d'énergie : Équilibré"
+                      # 1. Commande D-Bus universelle pour repasser en mode Équilibré (balanced)
+                      ${pkgs.dbus}/bin/dbus-send --system --dest=net.hadess.PowerProfiles --type=method_call /net/hadess/PowerProfiles org.freedesktop.DBus.Properties.Set string:"net.hadess.PowerProfiles" string:"ActiveProfile" variant:string:"balanced"
+
+                      # 2. Notification via KNotify pour la fermeture
+                      ${pkgs.dbus}/bin/dbus-send --session --dest=org.freedesktop.Notifications --type=method_call /org/freedesktop/Notifications org.freedesktop.Notifications.Notify string:"GameMode" uint32:0 string:"battery-profile-performance" string:"GameMode Désactivé" string:"Profil d'énergie : Équilibré" array:string:{} dict:string:string:{} int32:-1
                     ''}";
                   };
                 };
