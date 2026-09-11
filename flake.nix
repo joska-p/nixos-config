@@ -145,7 +145,7 @@
                 # Il faut rester sur la dernière branche legacy qui les supporte encore.
                 branch = "legacy_580";
                 modesetting.enable = true; # Required for NVIDIA PRIME
-                powerManagement.false = true; # Meilleure autonomie / veille sur portable
+                powerManagement.enable = false; # Évite les chutes de tension en jeu
                 prime = {
                   offload = {
                     enable = true;
