@@ -291,15 +291,6 @@
                 };
               };
 
-              programs.mangohud = {
-                enable = true;
-                enableSessionWide = false; # Ne pas l'activer sur tout le bureau
-                settings = {
-                  fps_limit = "45"; # Bloque le jeu à 45 FPS stables
-                  no_display = true; # Masque l'affichage des FPS à l'écran pour rester immersif
-                };
-              };
-
               # ==========================================================
               # PAQUETS SYSTEME (environment.systemPackages)
               # ==========================================================
@@ -413,6 +404,7 @@
                   protonplus # Gestion des versions de Proton
                   discord # Client Discord
                   heroic # Client GOG
+                  mangohud # Overlay de débogage pour Vulkan/OpenGL
                 ];
 
                 # --- Correction du lanceur KSystemLog ---
@@ -601,6 +593,19 @@
                   enable = true;
                   enableZshIntegration = true;
                 };
+
+                # ========================================================
+                # CONFIGURATION GAMING : MangoHud
+                # ========================================================
+                programs.mangohud = {
+                  enable = true;
+                  enableSessionWide = false; # Ne pas l'activer sur tout le bureau
+                  settings = {
+                    fps_limit = "45"; # Bloque le jeu à 45 FPS stables
+                    no_display = true; # Masque l'affichage des FPS à l'écran pour rester immersif
+                  };
+                };
+
               };
           }
         ];
