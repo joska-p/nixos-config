@@ -192,7 +192,7 @@
                 #jack.enable = true;
 
                 # Use the WirePlumber session manager
-                #wireplumber.enable = true;
+                wireplumber.enable = true;
               };
 
               # ==========================================================
