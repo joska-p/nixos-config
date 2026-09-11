@@ -291,6 +291,15 @@
                 };
               };
 
+              programs.mangohud = {
+                enable = true;
+                enableSessionWide = false; # Ne pas l'activer sur tout le bureau
+                settings = {
+                  fps_limit = "45"; # Bloque le jeu à 45 FPS stables
+                  no_display = true; # Masque l'affichage des FPS à l'écran pour rester immersif
+                };
+              };
+
               # ==========================================================
               # PAQUETS SYSTEME (environment.systemPackages)
               # ==========================================================
