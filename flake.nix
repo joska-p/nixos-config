@@ -278,9 +278,16 @@
               programs.gamemode = {
                 enable = true;
                 settings = {
-                  general.renice = 10; # Lower process priority for better performance
-                  gpu.gpu_device = 1; # Target specific GPU for GameMode
-
+                  general = {
+                    renice = 10;
+                    # Force le gouverneur CPU sur performance en jeu
+                    desiredgov = "performance";
+                  };
+                  gpu = {
+                    gpu_device = 1;
+                    # Force la carte Nvidia au maximum de ses fréquences stables
+                    nv_powermode = 1;
+                  };
                 };
               };
 
