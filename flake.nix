@@ -145,7 +145,7 @@
                 # Il faut rester sur la dernière branche legacy qui les supporte encore.
                 branch = "legacy_580";
                 modesetting.enable = true; # Required for NVIDIA PRIME
-                powerManagement.enable = true; # Meilleure autonomie / veille sur portable
+                powerManagement.false = true; # Meilleure autonomie / veille sur portable
                 prime = {
                   offload = {
                     enable = true;
@@ -283,8 +283,6 @@
 
                 };
               };
-
-              programs.gamescope.enable = true;
 
               # ==========================================================
               # PAQUETS SYSTEME (environment.systemPackages)
