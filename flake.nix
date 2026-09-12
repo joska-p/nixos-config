@@ -246,13 +246,6 @@
                 ];
               };
 
-              # VS Code souvent gardé "sous la main" en complément de Zed
-              # (nécessite le wrapper FHS pour l'auth/le keyring)
-              programs.vscode = {
-                enable = true;
-                package = pkgs.vscode.fhs;
-              };
-
               # Zsh must be enabled at the system level to be a valid login shell
               programs.zsh.enable = true;
 
@@ -422,6 +415,16 @@
                 };
 
                 programs.home-manager.enable = true;
+
+                # VS Code souvent gardé "sous la main" en complément de Zed
+                # (nécessite le wrapper FHS pour l'auth/le keyring)
+                programs.vscode = {
+                  enable = true;
+                  package = pkgs.vscode.fhs;
+                  # Cette option force Home Manager à créer un dossier d'extensions modifiable
+                  # dans votre espace utilisateur, ce qui débloquera Settings Sync et le Marketplace
+                  mutableExtensionsDir = true;
+                };
 
                 # ========================================================
                 # GIT
