@@ -93,6 +93,8 @@
               # /run/docker.sock et un alias `docker` -> podman. C'est ce
               # que cherchent par défaut le CLI devcontainer, l'extension
               # VS Code "Dev Containers", et la plupart des outils.
+              virtualisation.containers.enable = true;
+
               virtualisation.podman = {
                 enable = true;
                 dockerCompat = true; # crée la commande `docker` -> podman
