@@ -86,21 +86,6 @@
               networking.hostName = vars.hostname;
               networking.networkmanager.enable = true;
 
-              # ==========================================================
-              # CONTENEURS : Podman (remplace Docker) + devcontainers
-              # ==========================================================
-              # Podman en mode "compat Docker" : expose un socket à
-              # /run/docker.sock et un alias `docker` -> podman. C'est ce
-              # que cherchent par défaut le CLI devcontainer, l'extension
-              # VS Code "Dev Containers", et la plupart des outils.
-              virtualisation.containers.enable = true;
-
-              virtualisation.podman = {
-                enable = true;
-                dockerCompat = true; # crée la commande `docker` -> podman
-                dockerSocket.enable = true; # /run/docker.sock compatible
-                defaultNetwork.settings.dns_enabled = true; # DNS entre conteneurs (utile pour docker-compose)
-              };
 
               # ==========================================================
               # NIX : options, garbage collection, mises à jour auto
@@ -335,8 +320,11 @@
                   "networkmanager"
                   "wheel"
                   "gamemode"
-                  "podman"
                 ];
+
+                # PODMAN ROOTLESS ---
+                subUidRanges = [{ startUid = 100000; count = 65536; }];
+                subGidRanges = [{ startGid = 100000; count = 65536; }];
               };
             }
           )
@@ -377,6 +365,7 @@
                   # --- Outils Nix / shell ---
                   nixfmt # Formatteur Nix
                   direnv # Charge automatiquement les nix shell par dossier
+                  devenv # Your whole development environment, declared.
                   nix-direnv # Cache direnv accéléré pour Nix
                   jq # Traitement JSON en ligne de commande
                   bat # cat avec coloration syntaxique
@@ -417,6 +406,13 @@
                 };
 
                 programs.home-manager.enable = true;
+
+                # VS Code en a besoin pour les devconatainers
+                xdg.configFile."containers/policy.json".text = builtins.toJSON {
+                  default = [{ type = "insecureAcceptAnything"; }];
+                };
+
+
 
                 # VS Code souvent gardé "sous la main" en complément de Zed
                 # (nécessite le wrapper FHS pour l'auth/le keyring)
@@ -529,6 +525,11 @@
                   enableCompletion = true;
                   autosuggestion.enable = true;
                   syntaxHighlighting.enable = true;
+
+                  # Cette option ajoute du code personnalisé directement à la fin de votre .zshrc
+                  initContent = ''
+                    eval "$(devenv hook zsh)"
+                  '';
 
                   shellAliases = {
                     # --- General ---
