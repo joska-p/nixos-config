@@ -90,10 +90,17 @@
               # ==========================================================
               # NIX : options, garbage collection, mises à jour auto
               # ==========================================================
-              nix.settings.experimental-features = [
-                "nix-command"
-                "flakes"
-              ];
+              nix.settings = {
+                experimental-features = [
+                  "nix-command"
+                  "flakes"
+                ];
+
+                trusted-users = [
+                  "root"
+                  "muratha"
+                ];
+              };
               nix.optimise.automatic = true;
               nix.gc = {
                 automatic = true;
@@ -278,7 +285,6 @@
                 # --- Utilitaires de base ---
                 vim # Éditeur minimal, utile en secours (TTY/SSH sans DE)
                 p7zip # File archiver for .7z
-                aria2 # Multi-protocol download utility (CLI)
                 zenity # GUI dialog boxes from shell
                 libnotify # System notifications (notify-send)
                 aha # ANSI to HTML converter
@@ -381,6 +387,7 @@
 
                   # --- Utilitaires ---
                   uget # Gestionnaire de téléchargements (GUI)
+                  aria2 # Multi-protocol download utility (CLI)
 
                   # --- Gaming & compatibilité Windows ---
                   wine # Couche de compatibilité Windows
