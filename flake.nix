@@ -262,6 +262,8 @@
                 openssl
                 curl
                 expat
+                glib
+                fontconfig
               ];
 
               # --- Gaming ---
