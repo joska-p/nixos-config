@@ -15,6 +15,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    opencode-unstable.url = "github:dan-online/opencode-nix";
+
     nix-vite-plus.url = "github:ryoppippi/nix-vite-plus";
   };
 
@@ -24,6 +26,7 @@
       nixpkgs-unstable,
       home-manager,
       antigravity-nix,
+      opencode-unstable,
       nix-vite-plus,
       ...
     }@inputs:
@@ -398,7 +401,7 @@
                   antigravity-nix.packages.x86_64-linux.default
                   antigravity-nix.packages.x86_64-linux.google-antigravity-ide
                   antigravity-nix.packages.x86_64-linux.google-antigravity-cli
-                  opencode
+                  opencode-unstable
 
 
                   # --- Outils Nix / shell ---
