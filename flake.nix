@@ -15,7 +15,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    opencode-unstable.url = "github:dan-online/opencode-nix";
+    opencode-flake.url = "github:aodhanhayter/opencode-flake";
 
     nix-vite-plus.url = "github:ryoppippi/nix-vite-plus";
   };
@@ -26,7 +26,7 @@
       nixpkgs-unstable,
       home-manager,
       antigravity-nix,
-      opencode-unstable,
+      opencode-flake,
       nix-vite-plus,
       ...
     }@inputs:
@@ -392,7 +392,7 @@
                   nodejs # Requis par le réglage "node.path" de Zed
                   pnpm # Package manager pour Node.js
                   nixpkgs-fmt # Formatteur Nix
-                  nix-vite-plus.packages.${system}.vp # Vite plus toolchain
+                  nix-vite-plus.packages.${stdenv.hostPlatform.system}.vp # Vite plus toolchain
                   openssh # SSH client
                   gh # GitHub CLI
                   uv # Python package manager
@@ -401,8 +401,7 @@
                   antigravity-nix.packages.x86_64-linux.default
                   antigravity-nix.packages.x86_64-linux.google-antigravity-ide
                   antigravity-nix.packages.x86_64-linux.google-antigravity-cli
-                  opencode-unstable
-
+                  opencode-flake.packages.${stdenv.hostPlatform.system}.default
 
                   # --- Outils Nix / shell ---
                   nixfmt # Formatteur Nix
