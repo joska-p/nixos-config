@@ -15,7 +15,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    opencode-flake.url = "github:aodhanhayter/opencode-flake";
+    opencode-repo.url = "github:anomalyco/opencode";
 
     nix-vite-plus.url = "github:ryoppippi/nix-vite-plus";
   };
@@ -26,7 +26,7 @@
       nixpkgs-unstable,
       home-manager,
       antigravity-nix,
-      opencode-flake,
+      opencode-repo,
       nix-vite-plus,
       ...
     }@inputs:
@@ -401,7 +401,7 @@
                   antigravity-nix.packages.x86_64-linux.default
                   antigravity-nix.packages.x86_64-linux.google-antigravity-ide
                   antigravity-nix.packages.x86_64-linux.google-antigravity-cli
-                  opencode-flake.packages.${stdenv.hostPlatform.system}.default
+                  opencode-repo.packages.${stdenv.hostPlatform.system}.default
 
                   # --- Outils Nix / shell ---
                   nixfmt # Formatteur Nix
@@ -613,7 +613,7 @@
                 };
 
                 # direnv générique (les environnements de dev spécifiques
-                # sont gérés par ta flake de dev à part)
+                # sont gérés par la flake de dev à part)
                 programs.direnv = {
                   enable = true;
                   nix-direnv.enable = true;
