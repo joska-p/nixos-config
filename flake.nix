@@ -9,6 +9,13 @@
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    antigravity-nix = {
+      url = "github:jacopone/antigravity-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nix-vite-plus.url = "github:ryoppippi/nix-vite-plus";
   };
 
   outputs =
@@ -16,6 +23,8 @@
       nixpkgs,
       nixpkgs-unstable,
       home-manager,
+      antigravity-nix,
+      nix-vite-plus,
       ...
     }@inputs:
     let
@@ -85,7 +94,6 @@
               # ==========================================================
               networking.hostName = vars.hostname;
               networking.networkmanager.enable = true;
-
 
               # ==========================================================
               # NIX : options, garbage collection, mises à jour auto
@@ -329,8 +337,18 @@
                 ];
 
                 # PODMAN ROOTLESS ---
-                subUidRanges = [{ startUid = 100000; count = 65536; }];
-                subGidRanges = [{ startGid = 100000; count = 65536; }];
+                subUidRanges = [
+                  {
+                    startUid = 100000;
+                    count = 65536;
+                  }
+                ];
+                subGidRanges = [
+                  {
+                    startGid = 100000;
+                    count = 65536;
+                  }
+                ];
               };
             }
           )
@@ -367,6 +385,18 @@
                   # --- Editeurs & langages ---
                   nixd # Language server pour Nix (utilisé par Zed)
                   nodejs # Requis par le réglage "node.path" de Zed
+                  nixpkgs-fmt # Formatteur Nix
+                  nix-vite-plus.packages.${system}.vp # Vite plus toolchain
+                  openssh # SSH client
+                  gh # GitHub CLI
+                  uv # Python package manager
+
+                  # --- Agents ---
+                  antigravity-nix.packages.x86_64-linux.default
+                  antigravity-nix.packages.x86_64-linux.google-antigravity-ide
+                  antigravity-nix.packages.x86_64-linux.google-antigravity-cli
+                  opencode
+
 
                   # --- Outils Nix / shell ---
                   nixfmt # Formatteur Nix
@@ -416,10 +446,8 @@
 
                 # VS Code en a besoin pour les devconatainers
                 xdg.configFile."containers/policy.json".text = builtins.toJSON {
-                  default = [{ type = "insecureAcceptAnything"; }];
+                  default = [ { type = "insecureAcceptAnything"; } ];
                 };
-
-
 
                 # VS Code souvent gardé "sous la main" en complément de Zed
                 # (nécessite le wrapper FHS pour l'auth/le keyring)
