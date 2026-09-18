@@ -15,7 +15,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    opencode-repo.url = "github:anomalyco/opencode";
+    opencode-repo.url = "github:anomalyco/opencode/v2";
 
     nix-vite-plus.url = "github:ryoppippi/nix-vite-plus";
   };
