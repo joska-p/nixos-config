@@ -403,7 +403,7 @@
                   antigravity-nix.packages.x86_64-linux.google-antigravity-ide
                   antigravity-nix.packages.x86_64-linux.google-antigravity-cli
                   opencode-repo.packages.${stdenv.hostPlatform.system}.default
-                  openroute-repo.packages.${stdenv.hostPlatform.system}.default
+                  omniroute-repo.packages.${stdenv.hostPlatform.system}.default
 
                   # --- Outils Nix / shell ---
                   nixfmt # Formatteur Nix
