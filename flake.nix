@@ -466,8 +466,28 @@
                       };
 
                       models = {
+                        "auto/best-free" = {
+                          name = "Best Free";
+                        };
+
+                        "auto/coding:free" = {
+                          name = "Coding Free";
+                        };
+
                         "oc/deepseek-v4-flash-free" = {
                           name = "DeepSeek V4 Flash Free";
+                        };
+
+                        "oc/mimo-v2.5-free" = {
+                          name = "MiMo V2.5 Free";
+                        };
+
+                        "oc/nemotron-3-ultra-free" = {
+                          name = "Nemotron 3 Ultra Free";
+                        };
+
+                        "oc/north-mini-code-free" = {
+                          name = "North Mini Code Free";
                         };
                       };
                     };
