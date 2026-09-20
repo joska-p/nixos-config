@@ -453,6 +453,8 @@
                   };
                 };
 
+                programs.lazydocker.enable = true;
+
                 programs.home-manager.enable = true;
 
                 # VS Code en a besoin pour les devconatainers
