@@ -402,9 +402,6 @@
                   antigravity-nix.packages.x86_64-linux.google-antigravity-ide
                   antigravity-nix.packages.x86_64-linux.google-antigravity-cli
                   opencode-repo.packages.${stdenv.hostPlatform.system}.default
-                  (pkgs.writeShellScriptBin "omniroute" ''
-                    exec ${pkgs.nodejs}/bin/npx -y omniroute "$@"
-                  '')
 
                   # --- Outils Nix / shell ---
                   nixfmt # Formatteur Nix
