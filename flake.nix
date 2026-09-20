@@ -457,12 +457,16 @@
                 xdg.configFile."opencode/opencode.json".text = builtins.toJSON {
                   providers = {
                     "omniroute" = {
-                      "npm" = "@ai-sdk/openai-compatible";
+                      "package" = "@opencode/ai/providers/openai-compatible";
                       "name" = "OmniRoute";
-                      "options" = {
+                      "settings" = {
                         "baseURL" = "http://localhost:20128/v1";
-                        "apiKey" = "sk-988160cb1b1123ca-223574-5e315bfd";
                       };
+                    };
+                  };
+                  "models" = {
+                    "auto" = {
+                      "name" = "Auto-Combo (OmniRoute)";
                     };
                   };
                 };
