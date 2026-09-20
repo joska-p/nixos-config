@@ -16,7 +16,7 @@
     };
 
     opencode-repo.url = "github:anomalyco/opencode/v2";
-    omniroute-repo.url = "github:diegosouzapw/OmniRoute/release/v3.8.51";
+
     nix-vite-plus.url = "github:ryoppippi/nix-vite-plus";
   };
 
@@ -27,7 +27,6 @@
       home-manager,
       antigravity-nix,
       opencode-repo,
-      omniroute-repo,
       nix-vite-plus,
       ...
     }@inputs:
@@ -403,7 +402,9 @@
                   antigravity-nix.packages.x86_64-linux.google-antigravity-ide
                   antigravity-nix.packages.x86_64-linux.google-antigravity-cli
                   opencode-repo.packages.${stdenv.hostPlatform.system}.default
-                  omniroute-repo
+                  (pkgs.writeShellScriptBin "omniroute" ''
+                    exec ${pkgs.nodejs}/bin/npx -y omniroute "$@"
+                  '')
 
                   # --- Outils Nix / shell ---
                   nixfmt # Formatteur Nix
