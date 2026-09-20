@@ -390,7 +390,6 @@
                   # --- Editeurs & langages ---
                   nixd # Language server pour Nix (utilisé par Zed)
                   nodejs # Requis par le réglage "node.path" de Zed
-                  npm # Package manager pour Node.js
                   pnpm # Package manager pour Node.js
                   nixpkgs-fmt # Formatteur Nix
                   nix-vite-plus.packages.${stdenv.hostPlatform.system}.vp # Vite plus toolchain
