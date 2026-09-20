@@ -291,6 +291,8 @@
                 };
               };
 
+              virtualisation.docker.enable = true;
+
               # ==========================================================
               # PAQUETS SYSTEME (environment.systemPackages)
               # ==========================================================
@@ -339,20 +341,7 @@
                   "networkmanager"
                   "wheel"
                   "gamemode"
-                ];
-
-                # PODMAN ROOTLESS ---
-                subUidRanges = [
-                  {
-                    startUid = 100000;
-                    count = 65536;
-                  }
-                ];
-                subGidRanges = [
-                  {
-                    startGid = 100000;
-                    count = 65536;
-                  }
+                  "docker"
                 ];
               };
             }
