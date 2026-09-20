@@ -456,18 +456,22 @@
                 # Écriture propre du fichier de configuration opencode
                 xdg.configFile."opencode/opencode.json".text = builtins.toJSON {
                   "$schema" = "https://opencode.ai/config.json";
+
                   providers = {
-                    "omniroute" = {
-                      "package" = "@opencode/ai/providers/openai-compatible";
-                      "name" = "OmniRoute";
-                      "settings" = {
-                        "baseURL" = "http://localhost:20128/v1";
+                    omniroute = {
+                      name = "OmniRoute";
+                      package = "@opencode/ai/providers/openai-compatible";
+
+                      settings = {
+                        baseURL = "http://localhost:20128/v1";
                       };
-                    };
-                  };
-                  "models" = {
-                    "auto" = {
-                      "name" = "Auto-Combo (OmniRoute)";
+
+                      models = {
+                        "auto" = {
+                          name = "Auto-Combo (OmniRoute)";
+                        };
+
+                      };
                     };
                   };
                 };
