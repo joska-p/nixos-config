@@ -453,6 +453,19 @@
                   };
                 };
 
+                # Écriture propre du fichier de configuration opencode
+                xdg.configFile."opencode/opencode.json".text = builtins.toJSON {
+                  providers = {
+                    "omniroute"= {
+                      "npm"= "@ai-sdk/openai-compatible";
+                            "name"= "OmniRoute";
+                            "options"= {
+                              "baseURL"= "http://localhost:20128/v1";
+                              "apiKey"= "sk-988160cb1b1123ca-223574-5e315bfd";
+                    };
+                  };
+                };
+
                 programs.lazydocker.enable = true;
 
                 programs.home-manager.enable = true;
