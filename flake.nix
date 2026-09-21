@@ -10,12 +10,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    antigravity-nix = {
-      url = "github:jacopone/antigravity-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    opencode-repo.url = "github:anomalyco/opencode/v2";
+    llm-agents.url = "github:numtide/llm-agents.nix";
 
     nix-vite-plus.url = "github:ryoppippi/nix-vite-plus";
   };
@@ -25,8 +20,7 @@
       nixpkgs,
       nixpkgs-unstable,
       home-manager,
-      antigravity-nix,
-      opencode-repo,
+      llm-agents,
       nix-vite-plus,
       ...
     }@inputs:
@@ -110,6 +104,12 @@
                 trusted-users = [
                   "root"
                   "muratha"
+                ];
+                extra-substituters = [
+                  "https://numtide.com"
+                ];
+                extra-trusted-public-keys = [
+                  "://numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
                 ];
               };
               nix.optimise.automatic = true;
@@ -404,10 +404,8 @@
                   uv # Python package manager
 
                   # --- Agents ---
-                  antigravity-nix.packages.x86_64-linux.default
-                  antigravity-nix.packages.x86_64-linux.google-antigravity-ide
-                  antigravity-nix.packages.x86_64-linux.google-antigravity-cli
-                  opencode-repo.packages.${stdenv.hostPlatform.system}.default
+                  llm-agents.packages.${stdenv.hostPlatform.system}.antigravity-cli
+                  llm-agents.packages.${stdenv.hostPlatform.system}.opencode2
 
                   # --- Outils Nix / shell ---
                   nixfmt # Formatteur Nix
