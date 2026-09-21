@@ -603,7 +603,8 @@
 
                     # --- NixOS Management ---
                     rebuild = "sudo nixos-rebuild switch --flake ~/nixos-config";
-                    update = "sudo nixos-rebuild switch --upgrade --flake ~/nixos-config";
+                    # update = "sudo nixos-rebuild switch --recreate-lock-file --flake ~/nixos-config";
+                    update = "nix flake update --flake ~/nixos-config && sudo nixos-rebuild switch --flake ~/nixos-config";
 
                     # Cleaning tools
                     nix-clean = "sudo nix-collect-garbage -d && nix-collect-garbage -d";
