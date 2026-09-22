@@ -512,21 +512,6 @@
                   };
                 };
 
-                # Écriture propre du fichier de configuration opencode
-                xdg.configFile."opencode/opencode.json".text = builtins.toJSON {
-                  "$schema" = "https://opencode.ai/config.json";
-                  providers = {
-                    omniroute = {
-                      name = "OmniRoute";
-                      package = "@opencode/ai/providers/openai-compatible";
-
-                      settings = {
-                        baseURL = "http://localhost:20128/v1";
-                      };
-                    };
-                  };
-                };
-
                 programs.lazydocker.enable = true;
 
                 programs.home-manager.enable = true;
