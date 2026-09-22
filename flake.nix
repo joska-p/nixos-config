@@ -44,6 +44,65 @@
       };
     in
     {
+      # ==========================================================
+      # ENVIRONNEMENT DE DEVELOPPEMENT
+      #
+      # Ce shell est volontairement séparé de Home Manager.
+      # Les outils de développement temporaires sont disponibles
+      # uniquement quand le devShell est actif.
+      #
+      # Un projet peut l'activer automatiquement avec :
+      #
+      #   use flake ~/nixos-config
+      #
+      # dans son .envrc.
+      # ==========================================================
+      devShells.${system}.default = pkgs-unstable.mkShell {
+        packages = with pkgs-unstable; [
+          nodejs
+          pnpm
+          uv
+
+          nixd
+          nixfmt
+          nixpkgs-fmt
+
+          nix-vite-plus.packages.${system}.vp
+
+          llm-agents.packages.${system}.antigravity-cli
+          llm-agents.packages.${system}.opencode2
+
+          devcontainer
+        ];
+
+        shellHook = ''
+          # --------------------------------------------------------
+          # Etat local du développement
+          #
+          # Ces variables ne sont définies que dans le devShell.
+          # L'environnement KDE normal conserve les XDG du système.
+          # --------------------------------------------------------
+
+          export DEV_HOME="$PWD/.dev"
+
+          export XDG_CONFIG_HOME="$DEV_HOME/xdg/config"
+          export XDG_DATA_HOME="$DEV_HOME/xdg/data"
+          export XDG_STATE_HOME="$DEV_HOME/xdg/state"
+          export XDG_CACHE_HOME="$DEV_HOME/xdg/cache"
+
+          # pnpm global binaries / home
+          export PNPM_HOME="$DEV_HOME/pnpm"
+          export PATH="$PNPM_HOME:$PATH"
+
+          mkdir -p \
+            "$XDG_CONFIG_HOME" \
+            "$XDG_DATA_HOME" \
+            "$XDG_STATE_HOME" \
+            "$XDG_CACHE_HOME" \
+            "$PNPM_HOME"
+        '';
+      };
+
       nixosConfigurations.${vars.hostname} = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs vars pkgs-unstable; };
         modules = [
@@ -396,21 +455,13 @@
                   # --- Editeurs & langages ---
                   nixd # Language server pour Nix (utilisé par Zed)
                   nodejs # Requis par le réglage "node.path" de Zed
-                  pnpm # Package manager pour Node.js
                   nixpkgs-fmt # Formatteur Nix
-                  nix-vite-plus.packages.${stdenv.hostPlatform.system}.vp # Vite plus toolchain
                   openssh # SSH client
                   gh # GitHub CLI
-                  uv # Python package manager
-
-                  # --- Agents ---
-                  llm-agents.packages.${stdenv.hostPlatform.system}.antigravity-cli
-                  llm-agents.packages.${stdenv.hostPlatform.system}.opencode2
 
                   # --- Outils Nix / shell ---
                   nixfmt # Formatteur Nix
-                  direnv # Charge automatiquement les nix shell par dossier
-                  devenv # Your whole development environment, declared.
+                  direnv # Charge automatiquement les dev shells par dossier
                   nix-direnv # Cache direnv accéléré pour Nix
                   jq # Traitement JSON en ligne de commande
                   bat # cat avec coloration syntaxique
@@ -587,9 +638,9 @@
                   syntaxHighlighting.enable = true;
 
                   # Cette option ajoute du code personnalisé directement à la fin de votre .zshrc
-                  initContent = ''
-                    eval "$(devenv hook zsh)"
-                  '';
+                  # direnv is integrated through programs.direnv below.
+                  # Development environments are defined by flakes and activated
+                  # automatically when entering a project directory.
 
                   shellAliases = {
                     # --- General ---
@@ -633,8 +684,9 @@
                   };
                 };
 
-                # direnv générique (les environnements de dev spécifiques
-                # sont gérés par la flake de dev à part)
+                # direnv is the activation layer for project dev shells.
+                # The shell itself is defined by the project flake (or by
+                # ~/nixos-config for the shared development shell).
                 programs.direnv = {
                   enable = true;
                   nix-direnv.enable = true;
