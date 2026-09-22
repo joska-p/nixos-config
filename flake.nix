@@ -71,6 +71,8 @@
 
           llm-agents.packages.${system}.antigravity-cli
           llm-agents.packages.${system}.opencode2
+          llm-agents.packages.${system}.rtk
+          llm-agents.packages.${system}.agent-browser
 
           devcontainer
         ];
@@ -164,11 +166,13 @@
                   "root"
                   "muratha"
                 ];
-                extra-substituters = [
-                  "https://numtide.com"
+
+                substituters = [
+                  "https://cache.numtide.com"
                 ];
-                extra-trusted-public-keys = [
-                  "://numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
+
+                trusted-public-keys = [
+                  "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
                 ];
               };
               nix.optimise.automatic = true;
