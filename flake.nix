@@ -97,11 +97,15 @@
           export PATH="$PNPM_HOME:$PATH"
 
           mkdir -p \
-            "$XDG_CONFIG_HOME" \
-            "$XDG_DATA_HOME" \
-            "$XDG_STATE_HOME" \
-            "$XDG_CACHE_HOME" \
-            "$PNPM_HOME"
+          "$XDG_CONFIG_HOME" \
+          "$XDG_DATA_HOME" \
+          "$XDG_STATE_HOME" \
+          "$XDG_CACHE_HOME" \
+          "$PNPM_HOME"
+
+          if [ -f "$XDG_CONFIG_HOME/vite-plus/env" ]; then
+          . "$XDG_CONFIG_HOME/vite-plus/env"
+          fi
         '';
       };
 
