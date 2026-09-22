@@ -71,6 +71,8 @@
 
           llm-agents.packages.${system}.antigravity-cli
           llm-agents.packages.${system}.opencode2
+          llm-agents.packages.${system}.opencode
+          llm-agents.packages.${system}.pi
           llm-agents.packages.${system}.rtk
           llm-agents.packages.${system}.agent-browser
 
