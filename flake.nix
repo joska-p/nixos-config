@@ -665,6 +665,17 @@
 
                     # --- Navigation ---
                     conf = "cd ~/nixos-config";
+
+                    # -- yt-dlp ---
+                    # Télécharger uniquement l'audio en excellente qualité (conversion en MP3)
+                    yta = "yt-dlp -x --audio-format mp3 --audio-quality 0 --no-playlist";
+
+                    # Télécharger une playlist entière (vidéo + audio au meilleur format combiné)
+                    ytpl = "yt-dlp -f 'bv*+ba/b' --yes-playlist -o '%(playlist_index)s - %(title)s.%(ext)s'";
+
+                    # Télécharger l'audio de toute une playlist (conversion MP3 et numérotation)
+                    ytpla = "yt-dlp -x --audio-format mp3 --audio-quality 0 --yes-playlist -o '%(playlist_index)s - %(title)s.%(ext)s'";
+
                   };
 
                   oh-my-zsh = {
