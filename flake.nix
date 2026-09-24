@@ -671,10 +671,10 @@
                     yta = "yt-dlp -x --audio-format mp3 --audio-quality 0 --no-playlist";
 
                     # Télécharger une playlist entière (vidéo + audio au meilleur format combiné)
-                    ytpl = "yt-dlp -f 'bv*+ba/b' --yes-playlist -o '%(playlist_index)s - %(title)s.%(ext)s'";
+                    ytpl = "yt-dlp -N 8 -f 'bv*+ba/b' --yes-playlist -o '%(playlist_index)s - %(title)s.%(ext)s'";
 
                     # Télécharger l'audio de toute une playlist (conversion MP3 et numérotation)
-                    ytpla = "yt-dlp -x --audio-format mp3 --audio-quality 0 --yes-playlist -o '%(playlist_index)s - %(title)s.%(ext)s'";
+                    ytpla = "yt-dlp -N 8 -x --audio-format mp3 --audio-quality 0 --yes-playlist -o '%(playlist_index)s - %(title)s.%(ext)s'";
 
                   };
 
