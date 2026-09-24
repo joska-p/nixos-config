@@ -673,7 +673,7 @@
                   };
 
                   # Cette option ajoute du code personnalisé directement à la fin de votre .zshrc
-                  initExtra = ''
+                  initContent = ''
                     # 1. Télécharger une playlist entière (Vidéo + Audio) en parallèle (4 vidéos à la fois)
                     ytpl() {
                       yt-dlp --flat-playlist --print "%(playlist_index)02d _text_ %(id)s" "$1" | \
