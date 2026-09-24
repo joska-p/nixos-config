@@ -670,22 +670,13 @@
                     # -- yt-dlp ---
                     # Télécharger uniquement l'audio en excellente qualité (conversion en MP3)
                     yta = "yt-dlp -x --audio-format mp3 --audio-quality 0 --no-playlist";
+
+                    # Télécharger une playlist entière (vidéo + audio au meilleur format combiné)
+                    ytpl = "yt-dlp -f 'bv*+ba/b' --yes-playlist -o '%(playlist_index)s - %(title)s.%(ext)s'";
+
+                    # Télécharger l'audio de toute une playlist (conversion MP3 et numérotation)
+                    ytpla = "yt-dlp -x --audio-format mp3 --audio-quality 0 --yes-playlist -o '%(playlist_index)s - %(title)s.%(ext)s'";
                   };
-
-                  # Cette option ajoute du code personnalisé directement à la fin de votre .zshrc
-                  initContent = ''
-                    ytpl() {
-                      yt-dlp --flat-playlist --print "%(playlist_index)02d _text_ %(id)s" "$1" | \
-                      parallel --colsep ' _text_ ' --jobs 4 --bar \
-                        "yt-dlp -f 'bv*+ba/b' --no-progress -o '{1} - %(title)s.%(ext)s' 'https://youtu.be/{2}'"
-                    }
-
-                    ytpla() {
-                      yt-dlp --flat-playlist --print "%(playlist_index)02d _text_ %(id)s" "$1" | \
-                      parallel --colsep ' _text_ ' --jobs 4 --bar \
-                        "yt-dlp -x --audio-format mp3 --audio-quality 0 --no-progress -o '{1} - %(title)s.%(ext)s' 'https://youtu.be/{2}'"
-                    }
-                  '';
 
                   oh-my-zsh = {
                     enable = true;
