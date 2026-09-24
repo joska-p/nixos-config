@@ -677,13 +677,13 @@
                     # 1. Télécharger une playlist entière (Vidéo + Audio) en parallèle (4 vidéos à la fois)
                     ytpl() {
                       yt-dlp --flat-playlist --print "%(playlist_index)02d _text_ %(id)s" "$1" | \
-                      nix-parallel --colsep ' _text_ ' --jobs 4 "yt-dlp -f 'bv*+ba/b' -o '{1} - %(title)s.%(ext)s' 'https://youtube.com{2}'"
+                      parallel --colsep ' _text_ ' --jobs 4 "yt-dlp -f 'bv*+ba/b' -o '{1} - %(title)s.%(ext)s' 'https://youtube.com{2}'"
                     }
 
                     # 2. Télécharger l'audio de toute une playlist (MP3) en parallèle (4 audios à la fois)
                     ytpla() {
                       yt-dlp --flat-playlist --print "%(playlist_index)02d _text_ %(id)s" "$1" | \
-                      nix-parallel --colsep ' _text_ ' --jobs 4 "yt-dlp -x --audio-format mp3 --audio-quality 0 -o '{1} - %(title)s.%(ext)s' 'https://youtube.com{2}'"
+                      parallel --colsep ' _text_ ' --jobs 4 "yt-dlp -x --audio-format mp3 --audio-quality 0 -o '{1} - %(title)s.%(ext)s' 'https://youtube.com{2}'"
                     }
                   '';
 
