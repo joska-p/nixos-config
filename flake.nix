@@ -87,7 +87,7 @@
           # L'environnement KDE normal conserve les XDG du système.
           # --------------------------------------------------------
 
-          export DEV_HOME="$PWD/.dev"
+          export DEV_HOME="$PWD/.direnv_home"
 
           export XDG_CONFIG_HOME="$DEV_HOME/xdg/config"
           export XDG_DATA_HOME="$DEV_HOME/xdg/data"
