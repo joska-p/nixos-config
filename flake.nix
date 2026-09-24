@@ -676,14 +676,14 @@
                   initContent = ''
                     ytpl() {
                       yt-dlp --flat-playlist --print "%(playlist_index)02d _text_ %(id)s" "$1" | \
-                      parallel --colsep ' _text_ ' --jobs 4 \
-                        "yt-dlp -f 'bv*+ba/b' -o '{1} - %(title)s.%(ext)s' 'https://youtu.be/{2}'"
+                      parallel --colsep ' _text_ ' --jobs 4 --bar \
+                        "yt-dlp -f 'bv*+ba/b' --no-progress -o '{1} - %(title)s.%(ext)s' 'https://youtu.be/{2}'"
                     }
 
                     ytpla() {
                       yt-dlp --flat-playlist --print "%(playlist_index)02d _text_ %(id)s" "$1" | \
-                      parallel --colsep ' _text_ ' --jobs 4 \
-                        "yt-dlp -x --audio-format mp3 --audio-quality 0 -o '{1} - %(title)s.%(ext)s' 'https://youtu.be/{2}'"
+                      parallel --colsep ' _text_ ' --jobs 4 --bar \
+                        "yt-dlp -x --audio-format mp3 --audio-quality 0 --no-progress -o '{1} - %(title)s.%(ext)s' 'https://youtu.be/{2}'"
                     }
                   '';
 
