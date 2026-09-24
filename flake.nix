@@ -389,6 +389,7 @@
                 zenity # GUI dialog boxes from shell
                 libnotify # System notifications (notify-send)
                 aha # ANSI to HTML converter
+                parallel # shell tool for executing jobs in parallel using one or more computers
 
                 # --- Navigateurs ---
                 google-chrome
@@ -670,12 +671,20 @@
                     # Télécharger uniquement l'audio en excellente qualité (conversion en MP3)
                     yta = "yt-dlp -x --audio-format mp3 --audio-quality 0 --no-playlist";
 
-                    # Télécharger une playlist entière (vidéo + audio au meilleur format combiné)
-                    ytpl = "yt-dlp -N 8 -f 'bv*+ba/b' --yes-playlist -o '%(playlist_index)s - %(title)s.%(ext)s'";
+                    # Cette option ajoute du code personnalisé directement à la fin de votre .zshrc
+                    initExtra = ''
+                      # 1. Télécharger une playlist entière (Vidéo + Audio) en parallèle (4 vidéos à la fois)
+                      ytpl() {
+                        yt-dlp --flat-playlist --print "%(playlist_index)02d _text_ %(id)s" "$1" | \
+                        nix-parallel --colsep ' _text_ ' --jobs 4 "yt-dlp -f 'bv*+ba/b' -o '{1} - %(title)s.%(ext)s' 'https://youtube.com{2}'"
+                      }
 
-                    # Télécharger l'audio de toute une playlist (conversion MP3 et numérotation)
-                    ytpla = "yt-dlp -N 8 -x --audio-format mp3 --audio-quality 0 --yes-playlist -o '%(playlist_index)s - %(title)s.%(ext)s'";
-
+                      # 2. Télécharger l'audio de toute une playlist (MP3) en parallèle (4 audios à la fois)
+                      ytpla() {
+                        yt-dlp --flat-playlist --print "%(playlist_index)02d _text_ %(id)s" "$1" | \
+                        nix-parallel --colsep ' _text_ ' --jobs 4 "yt-dlp -x --audio-format mp3 --audio-quality 0 -o '{1} - %(title)s.%(ext)s' 'https://youtube.com{2}'"
+                      }
+                    '';
                   };
 
                   oh-my-zsh = {
