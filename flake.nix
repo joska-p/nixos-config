@@ -669,13 +669,13 @@
 
                     # -- yt-dlp ---
                     # Télécharger uniquement l'audio en excellente qualité (conversion en MP3)
-                    yta = "yt-dlp -x --audio-format mp3 --audio-quality 0 --no-playlist";
+                    yta = "yt-dlp -x --audio-format mp3 --audio-quality 0 --no-playlist  --sleep-interval 5 --max-sleep-interval 15 --sleep-requests 1.5 --limit-rate 3M";
 
                     # Télécharger une playlist entière (vidéo + audio au meilleur format combiné)
-                    ytpl = "yt-dlp -f 'bv*+ba/b' --yes-playlist -o '%(playlist_index)s - %(title)s.%(ext)s'";
+                    ytpl = "yt-dlp -f 'bv*+ba/b' --yes-playlist -o '%(title)s.%(ext)s' --sleep-interval 5 --max-sleep-interval 15 --sleep-requests 1.5 --limit-rate 3M --download-archive archive.txt";
 
                     # Télécharger l'audio de toute une playlist (conversion MP3 et numérotation)
-                    ytpla = "yt-dlp -x --audio-format mp3 --audio-quality 0 --yes-playlist -o '%(playlist_index)s - %(title)s.%(ext)s'";
+                    ytpla = "yt-dlp -c -x --audio-format mp3 --yes-playlist -o '%(title)s.%(ext)s' --sleep-interval 5 --max-sleep-interval 15 --sleep-requests 1.5 --limit-rate 3M --download-archive archive.txt";
                   };
 
                   oh-my-zsh = {
