@@ -674,8 +674,15 @@
                     # Télécharger une playlist entière (vidéo + audio au meilleur format combiné)
                     ytpl = "yt-dlp -f 'bv*+ba/b' --yes-playlist -o '%(title)s.%(ext)s' --sleep-interval 5 --max-sleep-interval 15 --sleep-requests 1.5 --limit-rate 3M --download-archive archive.txt";
 
+                    # ytpl reverse
+                    ytplr = "yt-dlp -f 'bv*+ba/b' --yes-playlist --playlist-reverse -o '%(title)s.%(ext)s' --sleep-interval 5 --max-sleep-interval 15 --sleep-requests 1.5 --limit-rate 3M --download-archive archive.txt";
+
                     # Télécharger l'audio de toute une playlist (conversion MP3 et numérotation)
                     ytpla = "yt-dlp -c -x --audio-format mp3 --yes-playlist -o '%(title)s.%(ext)s' --sleep-interval 5 --max-sleep-interval 15 --sleep-requests 1.5 --limit-rate 3M --download-archive archive.txt";
+
+                    # ytpla reverse
+                    ytplar = "yt-dlp -c -x --audio-format mp3 --yes-playlist --playlist-reverse -o '%(title)s.%(ext)s' --sleep-interval 5 --max-sleep-interval 15 --sleep-requests 1.5 --limit-rate 3M --download-archive archive.txt";
+
                   };
 
                   oh-my-zsh = {
